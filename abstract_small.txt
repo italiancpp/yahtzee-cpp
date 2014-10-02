@@ -1,0 +1,13 @@
+Il workshop spiega la potenza delle nuove versioni di C++ 11/14. Si lavorerà su una codebase già fornita
+Formato:
+10 min di spiegazione iniziale (format, formazione delle coppie)
+
+Seguiranno 4 slot:
+
+- 10 min di presentazione 
+- 25 min di sviluppo
+- 5 min di retrospettiva
+
+Al termine 10 min retrospettiva
+
+Gli argomenti affrontati  vanno dal miglioramento della produttività, della gestione della memoria, lambda e alcuni argomenti più avanzati di design non solo OO.

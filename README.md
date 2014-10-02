@@ -3,10 +3,14 @@ Yahtzee
 
 This is the codebase for the workshop on C++11/14.
 
+It's necessary Cocos2d-X can be downloaded here: [http://www.cocos2d-x.org/download/version#Cocos2d-x][1] [Version 3.2][2]
+
+
+
 ### Prerequisites ###
 
     * Linux: at least gcc 4.8
-    * Win32:
+    * Win32: VS 2013 e python 2.7.5
     * OSX: 
 
 
@@ -38,4 +42,5 @@ Run
     $ cocos run -p win32
 
 
-M
+[1]: http://www.cocos2d-x.org/download/version#Cocos2d-x "Cocos2d-x"
+[2]: http://www.cocos2d-x.org/filedown/cocos2d-x-3.2.zip "Versione 3.2"

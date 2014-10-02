@@ -1,0 +1,22 @@
+Con questo workshop si vuole spiegare le possibilità e la potenza delle nuove versioni di C++ 11 e 14. Si lavorerà su una codebase già fornita.
+
+Il formato del workshop sarà il seguente:
+
+10 min di spiegazione iniziale del format, organizzazione di formazione, le persone devono lavorare in pair.
+
+Seguiranno 4 slot di questo formato:
+
+- 10 min di presentazione di argomento c++ 11/14
+- 25 min di sviluppo
+- 5 min di retrospettiva
+
+Al termine 10 min retrospettiva finale!!!
+
+Gli argomenti affrontati andranno dal miglioramento della produttività, in cui si mostrerà come nuove feature come 'auto', i costruttori di default e l'uniform initializzation aiutino nella scrittura quotidiana del codice e semplifichino alcuni tipiche operazioni. Si tratterà anche la gestione dell'ownership , del ciclo di vita degli oggetti e la conseguente gestione della memoria; parti sempre molte complesse, ora migliorate e semplificate grazie all'introduzione e alla standardizzazione di alcuni pattern classici.
+Si affronteranno le lambda, uno degli argomenti più "mainstream", vedremo come il loro uso migliori e cambi il design del codice che si scrive e di come la loro interazione con le librerie standard, semplifichi e migliori il software scritto. Infine verranno presentate alcune tecniche più avanzate che vanno oltre l'OOP e prendano spunto dal funzionale.
+
+Per la natura del linguaggio e delle librerie usate si potrà fare il workshop con i 3 principali sistemi operativi Linux, Mac e Windows e senza nessun tool particolare. Sarà necessario presentarsi con il proprio portatile già configurato con l'esempio fornito compilato e lanciabile.
+
+Forniremo assistenza nelle settimane precedenti, attraverso una ML, a coloro che avranno problemi nel configurare il proprio portatile.
+
+Il workshop è orientato a circa 20 - 30 persone (10 - 15 coppie).

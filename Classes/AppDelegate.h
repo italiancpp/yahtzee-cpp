@@ -2,6 +2,7 @@
 #define  _APP_DELEGATE_H_
 
 #include "cocos2d.h"
+#include "Yahtzee/Generala.h"
 
 /**
 @brief    The cocos2d Application.
@@ -10,6 +11,7 @@ The reason for implement as private inheritance is to hide some interface call b
 */
 class  AppDelegate : private cocos2d::Application
 {
+    Generala _generala;
 public:
     AppDelegate();
     virtual ~AppDelegate();

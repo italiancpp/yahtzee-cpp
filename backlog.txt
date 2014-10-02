@@ -1,0 +1,115 @@
+Riassunto per proposta Agile Day
+
+----
+
+Titolo: C++  From '90 to '14
+
+Formato: workshop da 180 min
+
+Con questo workshop si vuole spiegare le possibilità e la potenza delle nuove versioni del c++ 11 e 14. Si lavorerà su una codebase già fornita, probabilmente il gioco dello yahtzee, con grafica fatta in Cocos-2D e test fatti con google test/Mock.
+
+Il formato del workshop saraà il seguente:
+
+5-10 min di spiegazione iniziale  e di formazione delle coppie, le persone DEVONO lavorare in pair
+
+Seguiranno 4 slot di questo formato:
+
+- 10 min di presentazione di argomento c++ 11/14
+- 25 min di sviluppo
+- 5 min di retrospettiva
+
+Infine 10 min retrospettiva finale!!!
+
+Gli argomenti affrontati saranno:
+
+- produttività, uso di auto, delegating/inheriting ctors, =default/delete. Quando e come usare auto, uso dei costruttori di default e riuso dei vari costruttori.
+- ownership, life cycle e gestione della memoria (smart pointers, rule of zero, move). Come evitare memori leak, come gestire il ciclo di vita degli oggetti come creare oggetti immutabili.
+- algoritmi & lambdas, come eliminare for e if in favore di map, file e reduce
+- beyond OO oppure templating++ quì sinceramente non saprei cosa scrivere ...
+
+Per la natura del linguaggio e delle librerie usate si potrà fare il workshop con i 3 principali sistemi operativi Linux, Mac e Windows e senza nessun tool particolare. Sarà necessario presentarsi con il proprio portatile già configurato con l'esempio fornito compilato e lanciabile.
+
+Forniremo assistenza nelle settimane precedenti, attraverso una ML, a colore che avranno problemi nel configurare il proprio portatile.
+
+-----
+
+
+Ho preso queste liste: 
+
+http://www.stroustrup.com/C++11FAQ.html#language 
+http://www.stroustrup.com/C++11FAQ.html#library
+
+e ho provato di mettere per ognuno dei 4 punti i vari argomenti:
+
+- produttività
+auto
+enum
+constexpr
+decltype
+control of defaults: default and delete
+delegating constructors
+for statement
+suffix return type syntax (extended function declaration syntax)
+in-class member initializers
+inherited constructors
+initializer lists (uniform and general initialization)
+null pointer (nullptr)
+override controls: override
+override controls: final
+PODs (generalized)
+range-for statement
+right-angle brackets
+static (compile-time) assertions (static_assert)
+template alias
+template typedef; see template alias
+Uniform initialization syntax and semantics
+User-defined literals
+Time utilities
+
+- ownership
+control of defaults: move and copy
+move semantics; see rvalue references
+scoped allocators
+shared_ptr
+smart pointers; see shared_ptr, weak_ptr, and unique_ptr
+unique_ptr
+weak_ptr
+
+- algoritmi & lambdas, come eliminare for e if in favore di map, file e reduce
+lambdas
+Improvements to algorithms
+array
+Improvements to containers
+function and bind
+forward_list a singly-liked list
+hash_tables; see unordered_map
+unordered_map
+tuple
+
+- beyond OO oppure templating++ quì sinceramente non saprei cosa scrivere ...
+Variadic Templates
+metaprogramming and type traits
+
+Domande:
+- Pensiamo di riuscire a inserire 1-2 max 3 esempi di ogni tipi nella nostra code base?
+- La lista è molto grande e dovremmo decidere bene cosa inserire nella code base ...
+- Pensate gli slot vadano bene? in particolare:
+    - 10 min per spiegare la feature sono troppi/troppo pochi
+- C'è qualcosa del C++ 14 che pensate meriti?
+- Quante persone/coppie decidiamo di accettare?
+- Proviamo a farci appoggiare da JetBrais con CLion? Sembra cascata a fagiolo ....
+- Abbiamo lasciato fuori tutto il discorso di:
+    - thread, atomic,
+    - atomic
+    - chrono
+    - enum
+    - constexpr
+    - regular expression
+    - async
+    - thread-local storage (thread_local)
+    - random number generators
+    - regex a regular expression library
+
+Altre ed eventuali ..
+
+
