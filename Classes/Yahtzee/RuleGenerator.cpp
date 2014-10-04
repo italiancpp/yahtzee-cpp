@@ -99,19 +99,8 @@ auto dgenerala_rule = MAKE_RULE(
 				}
 				);
 
+// DA PROPORRE COME MIGLIORAMENTO (issue #5)
 vector<Rule> RuleGenerator::GenerateRules()
 {
-	vector<Rule> rules;
-
-	rules.push_back(single_rule);
-	rules.push_back(pair_rule);
-	rules.push_back(dpair_rule);
-	rules.push_back(tris_rule);
-	rules.push_back(full_rule);
-	rules.push_back(poker_rule);
-	rules.push_back(straight_rule);
-	rules.push_back(generala_rule);
-	rules.push_back(dgenerala_rule);
-
-	return rules;
+	return { single_rule, pair_rule, dpair_rule, tris_rule, full_rule, poker_rule, straight_rule, generala_rule, dgenerala_rule };
 }
