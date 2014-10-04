@@ -10,6 +10,18 @@ ScoreCalculator::ScoreCalculator(std::vector<Rule>&& pRules) : rules(move(pRules
 {
 }
 
+// INVECCHIAMENTO
+ScoreCalculator::~ScoreCalculator()
+{}
+
+// INVECCHIAMENTO
+ScoreCalculator::ScoreCalculator(const ScoreCalculator& other)
+	: rules(other.rules)
+{
+
+}
+
+
 vector<unsigned short> CalculateRanks(const vector<Die>& dice, unsigned short maxValue)
 {
 	vector<unsigned short> ranks(maxValue);

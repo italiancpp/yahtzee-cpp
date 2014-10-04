@@ -12,11 +12,17 @@ void DiceRoller::Roll(vector<Die>& dice)
 {
 	uniform_int_distribution<unsigned short> rdist(1, maxDiceValue); 
 	
-	for (auto& die : dice)
+	// INVECCHIAMENTO
+	for (int i = 0; i < dice.size(); ++i)
+	{
+		dice[i].value = rdist(rengine);
+	}
+
+	/*for (auto& die : dice)
 	{
 		if (false == die.hold)
 			die.value = rdist(rengine);
-	}
+	}*/
 }
 
 
