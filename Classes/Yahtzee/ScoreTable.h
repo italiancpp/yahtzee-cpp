@@ -15,7 +15,7 @@ class ScoreTable
 {
 public:
 	ScoreTable();
-
+	~ScoreTable() {}
 	// INVECCHIAMENTO
 	ScoreTable(const ScoreTable& other);
 
