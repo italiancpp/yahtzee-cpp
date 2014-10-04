@@ -2,7 +2,7 @@
 #include "DiceRoller.h"
 #include "ScoreValues.h"
 #include "ScoreCalculator.h"
-#include "RuleGenerator.h"
+//#include "RuleGenerator.h" // INVECCHIAMENTO
 #include "GameState.h"
 #include <string>
 #include <sstream>
@@ -53,8 +53,9 @@ int Generala::Start()
 {
 	vector<Die> dice( dice_number, Die(1));
 	DiceRoller roller(max_dice_value);
-	ScoreCalculator calculator(RuleGenerator::GenerateRules());
-	
+	//ScoreCalculator calculator(RuleGenerator::GenerateRules());
+	ScoreCalculator calculator;
+
 	size_t playerNum = 1u;
 	cout << "Generala Game (alpha version)" << endl;
 	cout << endl;

@@ -11,8 +11,10 @@ class GameState;
 class ScoreCalculator
 {
 public:
-	ScoreCalculator(std::vector<Rule>&& pRules);
-	
+	// INVECCHIAMENTO
+	//ScoreCalculator(std::vector<Rule>&& pRules);
+	ScoreCalculator(){}
+
 	// INVECCHIAMENTO
 	~ScoreCalculator();
 	// INVECCHIAMENTO
@@ -20,7 +22,8 @@ public:
 
 	void CheckScore(const std::vector<Die>& dice, unsigned short maxDiceValue, GameState& currentTable) const;
 
-private:
-	std::vector<Rule> rules;
+	// INVECCHIAMENTO
+//private:
+//	std::vector<Rule> rules;
 };
 
