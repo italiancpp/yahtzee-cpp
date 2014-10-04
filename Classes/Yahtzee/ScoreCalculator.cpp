@@ -21,39 +21,64 @@ ScoreCalculator::ScoreCalculator(const ScoreCalculator& other)
 
 }
 
-
-vector<unsigned short> CalculateRanks(const vector<Die>& dice, unsigned short maxValue)
+void CalculateRanks(const vector<Die>& dice, unsigned short* ranks)
 {
-	vector<unsigned short> ranks(maxValue);
-
-	for(size_t i = 0u; i<dice.size(); ++i)
+	for (size_t i = 0u; i<dice.size(); ++i)
 	{
-		ranks[dice[i].value-1]+=1;
+		ranks[dice[i].value - 1] += 1;
 	}
-	
-	return ranks;
 }
 
-Histogram CalculateHistogram(const vector<unsigned short>& ranks)
+// INVECCHIAMENTO (=> vector + return by-value)
+//vector<unsigned short> CalculateRanks(const vector<Die>& dice, unsigned short maxValue)
+//{
+//	vector<unsigned short> ranks(maxValue);
+//
+//	for(size_t i = 0u; i<dice.size(); ++i)
+//	{
+//		ranks[dice[i].value-1]+=1;
+//	}
+//	
+//	return ranks;
+//}
+
+// INVECCHIAMENTO (=> return by-value)
+//Histogram CalculateHistogram(const vector<unsigned short>& ranks)
+//{
+//	Histogram histogram;
+//	
+//	for(size_t i=0u; i<ranks.size(); ++i)
+//	{
+//		if (ranks[i]>0)
+//			histogram[ranks[i]].push_front(i+1);
+//	}
+//
+//	return histogram;
+//}
+
+void CalculateHistogram(unsigned short* ranks, int size, Histogram& histogram)
 {
-	Histogram histogram;
-	
-	for(size_t i=0u; i<ranks.size(); ++i)
+	for (size_t i = 0u; i<size; ++i)
 	{
 		if (ranks[i]>0)
 			histogram[ranks[i]].push_front(i+1);
 	}
-
-	return histogram;
 }
 
 void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDiceValue, GameState& gameState) const
 {
-	auto ranks = CalculateRanks(dice, maxDiceValue);
-	auto histogram = CalculateHistogram(ranks);
+	// INVECCHIAMENTO (=> vector + return by-value)
+	unsigned short* ranks = new unsigned short[maxDiceValue];
+	CalculateRanks(dice, ranks);
+	//auto ranks = CalculateRanks(dice, maxDiceValue);
+	Histogram histogram;
+	CalculateHistogram(ranks, maxDiceValue, histogram);
+	//auto histogram = CalculateHistogram(ranks);
 	
 	for (auto& rule : rules)
 	{
 		rule(histogram, gameState);
 	}
+
+	delete [] ranks;
 }
