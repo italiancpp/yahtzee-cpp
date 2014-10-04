@@ -18,6 +18,13 @@ ScoreTable::ScoreTable()
 	}*/
 }
 
+// INVECCHIAMENTO
+ScoreTable::ScoreTable(const ScoreTable& other)
+	: scores(other.scores)
+{
+
+}
+
 unsigned short ScoreTable::TotalScore() const
 {
 	// INVECCHIAMENTO

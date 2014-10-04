@@ -16,6 +16,9 @@ class ScoreTable
 public:
 	ScoreTable();
 
+	// INVECCHIAMENTO
+	ScoreTable(const ScoreTable& other);
+
 	void TryAssignScore(unsigned short dieValue, size_t score);
 	void TryAssignScore(Scores::ScoreName scoreName, size_t score);
 	void AssignFrom(const ScoreTable& other, const std::string& score);
