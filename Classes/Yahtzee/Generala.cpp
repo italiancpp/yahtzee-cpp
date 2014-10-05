@@ -51,30 +51,32 @@ static const size_t shots_number = 3;
 
 int Generala::Start()
 {
-	vector<Die> dice( dice_number, Die(1));
+	vector<Die> dice(dice_number, Die(1));
 	DiceRoller roller(max_dice_value);
 	//ScoreCalculator calculator(RuleGenerator::GenerateRules());
 	ScoreCalculator calculator;
 
-	size_t playerNum = 1u;
+	// size_t playerNum = 1u;
 	cout << "Generala Game (alpha version)" << endl;
 	cout << endl;
 	cout << "Note: input errors are not checked" << endl;
 	cout << endl;
-	cout << "How many players? > ";
-	cin >> playerNum;	
-	vector<GameState> states(playerNum);
-	cout << endl;
-	cout << "Created game for " << playerNum << " players!" << endl;
-	cin.ignore();
-	system("cls");
+
+
+	// cout << "How many players? > ";
+	// cin >> playerNum;	
+	// vector<GameState> states(playerNum);
+	// cout << endl;
+	// cout << "Created game for " << playerNum << " players!" << endl;
+	// cin.ignore();
+	// system("cls");
 
 	size_t current_turn = turns_number;
 
 	while (current_turn--)
 	{
 		size_t player_count = 1u;
-		for (auto& state : states)
+		for (auto& state : _states)
 		{
 			state.NewTurn();
 		
@@ -137,7 +139,7 @@ int Generala::Start()
 
 	size_t player_count = 1u;
 	
-	for (auto& state : states)
+	for (auto& state : _states)
 	{
 		cout << "-----" << endl;
 		cout << "Player [" << player_count << "] FINAL SCORE TABLE" << endl;
@@ -149,7 +151,7 @@ int Generala::Start()
 	}
 	
 	cout << endl;
-	auto worst_best = minmax_element(begin(states), end(states), [](const GameState& state1, const GameState& state2) 
+	auto worst_best = minmax_element(begin(_states), end(_states), [](const GameState& state1, const GameState& state2) 
 		{
 			return state1.currentScores.TotalScore() < state2.currentScores.TotalScore();
 		});
@@ -159,10 +161,10 @@ int Generala::Start()
 		cout << "Deuce!" << endl;
 	}
 
-	else if (states.size() > 1)
+	else if (_states.size() > 1)
 	{
-		cout << "The winner is player " << distance(begin(states), worst_best.second) + 1 << endl;
-		cout << "The worst is player " << distance(begin(states), worst_best.first) + 1 << endl;
+		cout << "The winner is player " << distance(begin(_states), worst_best.second) + 1 << endl;
+		cout << "The worst is player " << distance(begin(_states), worst_best.first) + 1 << endl;
 	}
 
 	return 0;

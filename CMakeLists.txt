@@ -70,8 +70,7 @@ set(GAME_SRC
 )
 endif()
 
-set(GAME_SRC
-  ${GAME_SRC}
+set(CORE_SRC 
   Classes/Yahtzee/DicePlayer.cpp
   Classes/Yahtzee/DiceRoller.cpp
   Classes/Yahtzee/GameState.cpp
@@ -79,6 +78,8 @@ set(GAME_SRC
   Classes/Yahtzee/RuleGenerator.cpp
   Classes/Yahtzee/ScoreCalculator.cpp
   Classes/Yahtzee/ScoreTable.cpp)
+
+set(GAME_SRC ${GAME_SRC} ${CORE_SRC})
 
 set(COCOS2D_ROOT ${CMAKE_SOURCE_DIR}/cocos2d)
 if (WIN32)
@@ -261,3 +262,16 @@ else()
     )
 
 endif()
+
+
+set(SRC_TEST
+  Classes/test/yahtzee_test.cpp
+)
+
+#SISTEMARE con find_library
+include_directories(proj.linux/gtest/include)
+link_directories(${CMAKE_SOURCE_DIR}/proj.linux/gtest/lib)
+
+add_executable(yahtzee_test ${SRC_TEST} ${CORE_SRC})
+add_test(yahtzee_test yahtzee_test)
+target_link_libraries(yahtzee_test libgtest_main.a libgtest.a pthread)
