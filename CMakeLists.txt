@@ -268,7 +268,7 @@ else()
 
 endif()
 
-
+enable_testing()
 set(SRC_TEST
   Classes/test/yahtzee_test.cpp
 )
@@ -281,3 +281,4 @@ add_subdirectory(${GTEST_ROOT})
 add_executable(yahtzee_test ${SRC_TEST} ${CORE_SRC})
 add_test(yahtzee_test yahtzee_test)
 target_link_libraries(yahtzee_test gtest_main gtest pthread)
+add_custom_target(rt COMMAND "./yahtzee_test" DEPENDS yahtzee_test)
