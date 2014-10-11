@@ -268,10 +268,11 @@ set(SRC_TEST
   Classes/test/yahtzee_test.cpp
 )
 
-#SISTEMARE con find_library
-include_directories(proj.linux/gtest/include)
-link_directories(${CMAKE_SOURCE_DIR}/proj.linux/gtest/lib)
+### TESTING TARGET ###
+set(GTEST_ROOT ${CMAKE_SOURCE_DIR}/gtest)
+include_directories(${GTEST_ROOT}/include)
+add_subdirectory(${GTEST_ROOT})
 
 add_executable(yahtzee_test ${SRC_TEST} ${CORE_SRC})
 add_test(yahtzee_test yahtzee_test)
-target_link_libraries(yahtzee_test libgtest_main.a libgtest.a pthread)
+target_link_libraries(yahtzee_test gtest_main gtest pthread)
