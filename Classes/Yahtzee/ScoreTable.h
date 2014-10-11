@@ -25,6 +25,11 @@ public:
 	bool HasScore(Scores::ScoreName scoreName) const;
 	unsigned short TotalScore() const;
 
+//	bool operator == (const ScoreTable& other) const
+//	{
+//		return scores == other.scores;
+//	}
+
 	friend std::ostream& operator<<(std::ostream& stream, const ScoreTable& table);
 private:
 

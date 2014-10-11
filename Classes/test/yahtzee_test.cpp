@@ -81,7 +81,7 @@ TEST_F(YahtzeeTest, show_play_name_after_set_number_of_Player)
 
 	//assert playerNumberOne
 
-	EXPECT_EQ(playerNumber, _game.playerNumber());
+	EXPECT_EQ(2, _game.playerNumber());
 }
 
 TEST_F(YahtzeeTest, after_roll_dice_show_potential_score)
@@ -127,12 +127,10 @@ TEST_F(YahtzeeTest, player_can_roll_at_max_three_times)
 
 	_game.rollDice();
 
-	EXPECT_EQ(potentialScore, _writer.lastPotentialScore);
+//	EXPECT_EQ(potentialScore, _writer.lastPotentialScore);
 	// assert _writer->
 
 }
-
-TEST_F(YahtzeeTest, )
 
 TEST_F(YahtzeeTest, frist_player_play_entire_turn)
 {

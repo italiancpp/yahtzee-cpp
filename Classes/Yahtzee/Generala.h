@@ -37,7 +37,7 @@ class Generala
 public:
 
 	Generala()
-	:_playerNum(0), roller(max_dice_value), dice(dice_number, Die(1))
+	:_playerNum(0), dice(dice_number, Die(1)), roller(max_dice_value)
 	{
 		player_count = 1u;
 		current_turn = Scores::scores_count;
