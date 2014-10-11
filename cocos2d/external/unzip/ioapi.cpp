@@ -12,6 +12,13 @@
 
 #include "ioapi.h"
 
+#ifdef __APPLE__
+#  define off64_t off_t
+#  define fopen64 fopen
+#  define fseeko64 fseeko
+#  define ftello64 ftello
+#endif
+
 namespace cocos2d {
 
 voidpf call_zopen64 (const zlib_filefunc64_32_def* pfilefunc,const void*filename,int mode)

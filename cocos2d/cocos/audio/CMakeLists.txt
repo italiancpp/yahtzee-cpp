@@ -12,7 +12,14 @@ if(WIN32)
 	win32/MciPlayer.h
   )
 elseif(APPLE)
-
+  set(AUDIO_SRC
+    mac/SimpleAudioEngine_objc.m
+    mac/SimpleAudioEngine.mm
+    mac/CocosDenshion.m
+    mac/CDAudioManager.m
+    mac/CDXMacOSXSupport.h
+    mac/CDXMacOSXSupport.mm
+  )
 else()
   set(AUDIO_SRC
     linux/SimpleAudioEngineFMOD.cpp
