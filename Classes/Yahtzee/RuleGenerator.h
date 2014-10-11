@@ -8,6 +8,6 @@
 class RuleGenerator
 {
 public:
-	static std::vector<Rule> GenerateRules();
+	//static std::vector<Rule> GenerateRules();
 };
 

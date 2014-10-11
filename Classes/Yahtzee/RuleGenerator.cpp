@@ -100,7 +100,7 @@ auto dgenerala_rule = MAKE_RULE(
 				);
 
 // DA PROPORRE COME MIGLIORAMENTO (issue #5)
-vector<Rule> RuleGenerator::GenerateRules()
-{
-	return { single_rule, pair_rule, dpair_rule, tris_rule, full_rule, poker_rule, straight_rule, generala_rule, dgenerala_rule };
-}
+//vector<Rule> RuleGenerator::GenerateRules()
+//{
+//	return { single_rule, pair_rule, dpair_rule, tris_rule, full_rule, poker_rule, straight_rule, generala_rule, dgenerala_rule };
+//}
