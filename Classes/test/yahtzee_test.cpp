@@ -2,6 +2,18 @@
 
 #include "../Yahtzee/Generala.h"
 
+class MockYahtzeeWriter : public YahtzeeWriter
+{
+public:
+
+
+	virtual void startTurnFor(size_t player_count, size_t current_turn, size_t const turns_number);
+
+	virtual void showPotentialScores(ScoreTable scores);
+
+	ScoreTable lastPotentialScore;
+};
+
 class YahtzeeTest : public testing::Test
 {
 protected:
@@ -54,6 +66,7 @@ protected:
 	// Queue<int> q1_;
 	// Queue<int> q2_;
 	Generala _game;
+	MockYahtzeeWriter _writer;
 };
 
 TEST_F(YahtzeeTest, DefaultConstructor)
@@ -61,18 +74,88 @@ TEST_F(YahtzeeTest, DefaultConstructor)
 	EXPECT_EQ(0u, _game.playerNumber());
 }
 
-TEST_F(YahtzeeTest, SetNumberOfPlayerNumber)
+TEST_F(YahtzeeTest, show_play_name_after_set_number_of_Player)
 {
-	auto playerNumber = 2u;
-	_game.playerNumber(playerNumber);
+	_game.playerNumber(2);
+	//	_game.players({"p1", "p2"})
+
+	//assert playerNumberOne
 
 	EXPECT_EQ(playerNumber, _game.playerNumber());
 }
 
-// TEST_F(YahtzeeTest, Dequeue)
-// {
-// }
+TEST_F(YahtzeeTest, after_roll_dice_show_potential_score)
+{
+    _game.playerNumber(2u);
 
-// TEST_F(YahtzeeTest, Map)
-// {
-// }
+    _game.rollDice();
+
+//	_writer.showPotentialScores() as been called
+}
+
+TEST_F(YahtzeeTest, current_player_can_choose_score)
+{
+	_game.playerNumber(2u);
+
+	_game.rollDice();
+
+	_game.selectScore(Scores::ScoreName::straight);
+}
+
+
+TEST_F(YahtzeeTest, when_player_choose_score_the_turn_end)
+{
+	_game.playerNumber(2u);
+
+	_game.rollDice();
+
+	_game.selectScore(Scores::ScoreName::straight);
+
+	//assert _writer->endTurn called
+	//assert _writer->currentPlayerChanged called
+}
+
+TEST_F(YahtzeeTest, player_can_roll_at_max_three_times)
+{
+	_game.playerNumber(2u);
+
+	_game.rollDice();
+	_game.rollDice();
+	_game.rollDice();
+
+	auto potentialScore = _writer.lastPotentialScore;
+
+	_game.rollDice();
+
+	EXPECT_EQ(potentialScore, _writer.lastPotentialScore);
+	// assert _writer->
+
+}
+
+TEST_F(YahtzeeTest, )
+
+TEST_F(YahtzeeTest, frist_player_play_entire_turn)
+{
+	_game.playerNumber(2);
+
+	_game.rollDice();
+	_game.holdDice({1, 3, 5});
+	_game.rollDice();
+	_game.holdDice({2});
+	_game.rollDice();
+	_game.selectScore(Scores::ScoreName::full);
+
+	//assert player NumberTwo
+
+}
+
+
+void MockYahtzeeWriter::startTurnFor(size_t player_count, size_t current_turn, size_t const turns_number)
+{
+
+}
+
+void MockYahtzeeWriter::showPotentialScores(ScoreTable scores)
+{
+
+}

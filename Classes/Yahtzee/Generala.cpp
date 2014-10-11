@@ -9,6 +9,7 @@
 #include <iostream>
 #include <iterator>
 #include <algorithm>
+#include <string.h>
 
 using namespace std;
 
@@ -44,93 +45,76 @@ void ChooseScore(GameState& state)
 	cout << state.currentScores;
 } 
 
-static const size_t dice_number = 5;
-static const unsigned short max_dice_value = 6;
-static const size_t turns_number = Scores::scores_count;
-static const size_t shots_number = 3;
+const size_t Generala::dice_number = 5;
+const unsigned short Generala::max_dice_value = 6;
+const size_t Generala::turns_number = Scores::scores_count;
+const size_t Generala::shots_number = 3;
+
+
+
 
 int Generala::Start()
 {
-	vector<Die> dice(dice_number, Die(1));
-	DiceRoller roller(max_dice_value);
-	//ScoreCalculator calculator(RuleGenerator::GenerateRules());
-	ScoreCalculator calculator;
 
-	// size_t playerNum = 1u;
-	cout << "Generala Game (alpha version)" << endl;
-	cout << endl;
-	cout << "Note: input errors are not checked" << endl;
-	cout << endl;
-
-
-	// cout << "How many players? > ";
-	// cin >> playerNum;	
-	// vector<GameState> states(playerNum);
-	// cout << endl;
-	// cout << "Created game for " << playerNum << " players!" << endl;
-	// cin.ignore();
-	// system("cls");
-
-	size_t current_turn = turns_number;
-
-	while (current_turn--)
+//	while (current_turn--)
 	{
-		size_t player_count = 1u;
-		for (auto& state : _states)
+//		for (auto& state : _states)
 		{
-			state.NewTurn();
+			state().NewTurn();
+			player_count++;
 		
-			system("cls");
-			cout << "Player [" << player_count++ << "] Turn: " << turns_number - current_turn << " of " << turns_number << endl;
-			cout << endl;
+//			system("cls");
+//			cout << "Player [" << player_count++ << "] Turn: " << turns_number - current_turn << " of " << turns_number << endl;
+//			cout << endl;
+			yahtzeeWriter->startTurnFor(player_count, current_turn, turns_number);
 
-			size_t current_shot = shots_number;
 
-			while(current_shot--)
+
+//			while(current_shot--)
 			{
-				state.NewShot();
+//				state().NewShot();
+//
+//				roller.Roll(dice);
+//				print_dice(dice);
+//
+//				calculator.CheckScore(dice, max_dice_value, state());
+//				cout << state().potentialScores;
+//				hold_all(dice, false);
+//
+//				cout << endl;
 
-				roller.Roll(dice);
-				print_dice(dice);
-				
-				calculator.CheckScore(dice, max_dice_value, state);
-				cout << state.potentialScores;
-				hold_all(dice, false);
-
-				cout << endl;
-
-				if (current_shot)
-				{
-					cout << "Hold? ('S' if served) > ";
-					string toHold;
-					getline( cin, toHold );
-
-					if (toHold == "S" || toHold == "s")
-					{
-						ChooseScore(state);
-						break;
-					}
-
-					else
-					{
-						istringstream ss(toHold);
-						vector<string> tokens;
-						copy(istream_iterator<string>(ss), istream_iterator<string>(), back_inserter(tokens));
-
-						for (auto& token : tokens)
-						{
-							auto h = stoul(token);
-							if (h < 6)
-							{
-								dice[h-1].hold = true;
-							}
-						}
-					}
-				}
-				else 
-				{
-					ChooseScore(state);
-				}
+//				if (current_shot)
+//				{
+//					cout << "Hold? ('S' if served) > ";
+//					string toHold;
+//					getline( cin, toHold );
+//
+//					if (toHold == "S" || toHold == "s")
+//					{
+//						ChooseScore(state);
+//						break;
+//					}
+//
+//					else
+//					{
+//						istringstream ss(toHold);
+//						vector<string> tokens;
+//						copy(istream_iterator<string>(ss), istream_iterator<string>(), back_inserter(tokens));
+//
+//						for (auto& token : tokens)
+//						{
+//							auto h = stoul(token);
+//							if (h < 6)
+//							{
+//								dice[h-1].hold = true;
+//							}
+//						}
+//					}
+//				}
+//				else
+//				{
+//					ChooseScore(state);
+//				}
 			}
 		}
 	}
@@ -168,4 +152,69 @@ int Generala::Start()
 	}
 
 	return 0;
+}
+
+void Generala::rollDice()
+{
+	state().NewShot();
+
+	roller.Roll(dice);
+	print_dice(dice);
+
+	calculator.CheckScore(dice, max_dice_value, state());
+	yahtzeeWriter->showPotentialScores(state().potentialScores);
+	hold_all(dice, false);
+
+	cout << endl;
+
+	cout << "Hold? ('S' if served) > ";
+}
+
+
+void Generala::holdDice(vector<int> diceIndex)
+{
+	for (auto index : diceIndex)
+	{
+		if (index < 6)
+		{
+			dice[index-1].hold = true;
+		}
+	}
+
+}
+
+
+void Generala::selectScore(Scores::ScoreName score)
+{
+	if (current_shot)
+	{
+		cout << "Hold? ('S' if served) > ";
+		string toHold;
+		getline( cin, toHold );
+
+		if (toHold == "S" || toHold == "s")
+		{
+			ChooseScore(state());
+		}
+		else
+		{
+			istringstream ss(toHold);
+			vector<string> tokens;
+			copy(istream_iterator<string>(ss), istream_iterator<string>(), back_inserter(tokens));
+
+			for (auto& token : tokens)
+			{
+				auto h = stoul(token);
+				if (h < 6)
+				{
+					dice[h-1].hold = true;
+				}
+			}
+		}
+	}
+	else
+	{
+		ChooseScore(state());
+	}
+
 }
