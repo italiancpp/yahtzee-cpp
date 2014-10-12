@@ -22,6 +22,8 @@ if (MSVC)
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
 
+  add_definitions(/D _VARIADIC_MAX=10)
+
 elseif (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 	set(CMAKE_C_FLAGS_DEBUG "-g -Wall -DCOCOS2D_DEBUG=1")
 	set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
@@ -91,13 +93,16 @@ include_directories(
   ${COCOS2D_ROOT}/cocos/2d/renderer
   ${COCOS2D_ROOT}/cocos/2d/platform
   ${COCOS2D_ROOT}/cocos/2d/platform/desktop
+  ${COCOS2D_ROOT}/cocos/platform/desktop
   ${COCOS2D_ROOT}/cocos/2d/platform/win32
+  ${COCOS2D_ROOT}/cocos/platform/win32
   ${COCOS2D_ROOT}/cocos/base
   ${COCOS2D_ROOT}/cocos/deprecated
   ${COCOS2D_ROOT}/cocos/physics
   ${COCOS2D_ROOT}/cocos/editor-support
   ${COCOS2D_ROOT}/cocos/math
   ${COCOS2D_ROOT}/extensions
+  ${COCOS2D_ROOT}/cocos/platform/desktop
   ${COCOS2D_ROOT}/external
   ${COCOS2D_ROOT}/external/edtaa3func
   ${COCOS2D_ROOT}/external/jpeg/include/win32
