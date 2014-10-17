@@ -1,8 +1,4 @@
 #include "ScoreCalculator.h"
-#include <map>
-#include <list>
-#include <iostream>
-#include "GameState.h"
 
 using namespace std;
 
@@ -15,11 +11,11 @@ ScoreCalculator::~ScoreCalculator()
 {}
 
 // INVECCHIAMENTO
-ScoreCalculator::ScoreCalculator(const ScoreCalculator& other)
-	//: rules(other.rules)
-{
-
-}
+//ScoreCalculator::ScoreCalculator(const ScoreCalculator& other)
+//	//: rules(other.rules)
+//{
+//
+//}
 
 void CalculateRanks(const vector<Die>& dice, unsigned short* ranks)
 {
@@ -98,7 +94,7 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 	
 	if (histogram_has(histogram, 2))
 	{
-		cout << "PAIR" << endl;
+		_writer.writeLine("PAIR");
 		for (auto pair : histogram.find(2)->second)
 		{
 			state.potentialScores.TryAssignScore(pair, 2 * pair);
@@ -106,24 +102,24 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 	}
 	
 	if ((histogram_has(histogram, 2)) && histogram.find(2)->second.size() == 2)
-		cout << "DOULE PAIR" << endl;
+		_writer.writeLine("DOULE PAIR");
 
 	if (histogram_has(histogram, 3))
 	{
-		cout << "TRIS" << endl;
+		_writer.writeLine("TRIS");
 		auto trisValue = histogram.find(3)->second.front();
 		state.potentialScores.TryAssignScore(trisValue, 3 * trisValue);
 	}
 
 	if (histogram_has(histogram, 2) && histogram_has(histogram, 3))
 	{
-		cout << "FULL" << endl;
+		_writer.writeLine("FULL");
 		state.potentialScores.TryAssignScore(Scores::full, Score(30, state));
 	}
 
 	if (histogram_has(histogram, 4))
 	{
-		cout << "POKER" << endl;
+		_writer.writeLine("POKER");
 		state.potentialScores.TryAssignScore(Scores::poker, Score(40, state));
 		auto pokerValue = histogram.find(4)->second.front();
 		state.potentialScores.TryAssignScore(pokerValue, 4 * pokerValue);
@@ -131,13 +127,13 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 
 	if ((histogram.size() == 1) && histogram_has(histogram, 1))
 	{
-		cout << "STRAIGHT" << endl;
+		_writer.writeLine("STRAIGHT");
 		state.potentialScores.TryAssignScore(Scores::straight, Score(20, state));
 	}
 
 	if (histogram_has(histogram, 5))
 	{
-		cout << "GENERALA" << endl;
+		_writer.writeLine("GENERALA");
 		state.potentialScores.TryAssignScore(Scores::generala, Score(50, state));
 		auto generalaValue = histogram.find(5)->second.front();
 		state.potentialScores.TryAssignScore(generalaValue, 5 * generalaValue);
@@ -145,11 +141,13 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 
 	if (histogram_has(histogram, 5) && state.currentScores.HasScore(Scores::generala))
 	{
-		cout << "DOUBLE GENERALA" << endl;
+		_writer.writeLine("DOUBLE GENERALA");
 		state.potentialScores.TryAssignScore(Scores::double_generala, Score(100, state));
 		auto generalaValue = histogram.find(5)->second.front();
 		state.potentialScores.TryAssignScore(generalaValue, 5 * generalaValue);
 	}
+	
+	
 
 	/*for (auto& rule : rules)
 	{

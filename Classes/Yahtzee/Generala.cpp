@@ -42,7 +42,7 @@ void ChooseScore(GameState& state)
 	
 	cout << endl;
 	cout << "CURRENT SCORES" << endl;
-	cout << state.currentScores;
+//	cout << state.currentScores;
 } 
 
 const size_t Generala::dice_number = 5;
@@ -123,16 +123,16 @@ int Generala::Start()
 
 	size_t player_count = 1u;
 	
-	for (auto& state : _states)
-	{
-		cout << "-----" << endl;
-		cout << "Player [" << player_count << "] FINAL SCORE TABLE" << endl;
-		cout << endl;
-		cout << state.currentScores << endl;
-		cout << "Total Score: " << state.currentScores.TotalScore() << endl;
-		cout << endl;
-		player_count++;
-	}
+//	for (auto& state : _states)
+//	{
+//		cout << "-----" << endl;
+//		cout << "Player [" << player_count << "] FINAL SCORE TABLE" << endl;
+//		cout << endl;
+//		cout << state.currentScores << endl;
+//		cout << "Total Score: " << state.currentScores.TotalScore() << endl;
+//		cout << endl;
+//		player_count++;
+//	}
 	
 	cout << endl;
 	auto worst_best = minmax_element(begin(_states), end(_states), [](const GameState& state1, const GameState& state2) 
@@ -216,5 +216,11 @@ void Generala::selectScore(Scores::ScoreName score)
 	{
 		ChooseScore(state());
 	}
+
+}
+
+void YahtzeeWriter::numberOfPlayersChanged(size_t oldValue, size_t newValue)
+{
+	//std::cout << "Created game for " << _playerNum << " players!" << std::endl;
 
 }

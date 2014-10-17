@@ -5,6 +5,7 @@
 #include <functional>
 #include "Rule.h"
 #include "Die.h"
+#include "YahtzeeWriter.h"
 
 class GameState;
 
@@ -13,7 +14,8 @@ class ScoreCalculator
 public:
 	// INVECCHIAMENTO
 	//ScoreCalculator(std::vector<Rule>&& pRules);
-	ScoreCalculator(){}
+	ScoreCalculator(YahtzeeWriter &writer) : _writer(_writer)
+	{}
 
 	// INVECCHIAMENTO
 	~ScoreCalculator();
@@ -25,5 +27,8 @@ public:
 	// INVECCHIAMENTO
 //private:
 //	std::vector<Rule> rules;
+
+private:
+	YahtzeeWriter &_writer;
 };
 

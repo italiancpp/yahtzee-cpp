@@ -5,14 +5,7 @@
 #include "DiceRoller.h"
 #include "ScoreCalculator.h"
 #include <vector>
-#include <iostream>
-
-class YahtzeeWriter
-{
-public:
-	virtual void startTurnFor(size_t player_count, size_t current_turn, size_t const turns_number) = 0;
-	virtual void showPotentialScores(ScoreTable scores) = 0;
-};
+#include "YahtzeeWriter.h"
 
 class Generala
 {
@@ -37,7 +30,7 @@ class Generala
 public:
 
 	Generala()
-	:_playerNum(0), dice(dice_number, Die(1)), roller(max_dice_value)
+	:_playerNum(0), dice(dice_number, Die(1)), roller(max_dice_value), calculator(*yahtzeeWriter)
 	{
 		player_count = 1u;
 		current_turn = Scores::scores_count;
@@ -57,9 +50,10 @@ public:
 
 	void playerNumber(size_t n)
 	{
+		auto old = _playerNum;
 		_states.resize(n);
 		_playerNum = n;
-		std::cout << "Created game for " << _playerNum << " players!" << std::endl;
+		yahtzeeWriter->numberOfPlayersChanged(old, _playerNum);
 	}
 
 	int Start();
