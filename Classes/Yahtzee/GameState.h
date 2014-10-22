@@ -12,6 +12,7 @@ public:
 	void NewShot();
 	
 	void AssignScoreFromPotential(const std::string& score);
+	void AssignScoreFromPotential(Scores::ScoreName score);
 
 	ScoreTable currentScores;
 	ScoreTable potentialScores;

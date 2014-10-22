@@ -9,6 +9,12 @@ struct Score
 {
 	bool assigned;
 	unsigned short value;
+
+	bool operator == (const Score & other) const
+	{
+		return assigned == other.assigned &&
+			value == other.value;
+	}
 };
 
 class ScoreTable
@@ -22,13 +28,14 @@ public:
 	void TryAssignScore(unsigned short dieValue, size_t score);
 	void TryAssignScore(Scores::ScoreName scoreName, size_t score);
 	void AssignFrom(const ScoreTable& other, const std::string& score);
+	void AssignFrom(const ScoreTable& other, Scores::ScoreName score);
 	bool HasScore(Scores::ScoreName scoreName) const;
 	unsigned short TotalScore() const;
 
-//	bool operator == (const ScoreTable& other) const
-//	{
-//		return scores == other.scores;
-//	}
+	bool operator == (const ScoreTable& other) const
+	{
+		return scores == other.scores;
+	}
 
 	friend std::ostream& operator<<(std::ostream& stream, const ScoreTable& table);
 private:

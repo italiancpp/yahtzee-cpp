@@ -21,16 +21,18 @@ class Generala
 	size_t current_shot;
 
 	std::vector<Die> dice;
-	DiceRoller roller;
+	IDiceRoller& roller;
 	//ScoreCalculator calculator(RuleGenerator::GenerateRules());
+
+	YahtzeeWriter *yahtzeeWriter;
 	ScoreCalculator calculator;
 
 
 
 public:
 
-	Generala()
-	:_playerNum(0), dice(dice_number, Die(1)), roller(max_dice_value), calculator(*yahtzeeWriter)
+	Generala(IDiceRoller& _roller, YahtzeeWriter *writer)
+	:_playerNum(0), dice(dice_number, Die(1)), roller(_roller), yahtzeeWriter(writer), calculator(*yahtzeeWriter)
 	{
 		player_count = 1u;
 		current_turn = Scores::scores_count;
@@ -60,7 +62,6 @@ public:
 
     void rollDice();
 
-	YahtzeeWriter *yahtzeeWriter;
 
 	void selectScore(Scores::ScoreName score);
 

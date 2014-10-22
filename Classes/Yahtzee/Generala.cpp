@@ -31,14 +31,14 @@ void print_dice(const vector<Die>& dice)
 	cout << endl;
 }
 
-void ChooseScore(GameState& state)
+void ChooseScore(GameState &state, Scores::ScoreName name)
 {
 	cout << "Choose a line with '*' > ";
 	string line;
-	getline(cin, line);
+//	getline(cin, line);
 	cout << "CHOSEN " << line << endl;
 	
-	state.AssignScoreFromPotential(line);
+	state.AssignScoreFromPotential(name);
 	
 	cout << endl;
 	cout << "CURRENT SCORES" << endl;
@@ -190,11 +190,11 @@ void Generala::selectScore(Scores::ScoreName score)
 	{
 		cout << "Hold? ('S' if served) > ";
 		string toHold;
-		getline( cin, toHold );
+//		getline( cin, toHold );
 
 		if (toHold == "S" || toHold == "s")
 		{
-			ChooseScore(state());
+			ChooseScore(state(), score);
 		}
 		else
 		{
@@ -214,7 +214,7 @@ void Generala::selectScore(Scores::ScoreName score)
 	}
 	else
 	{
-		ChooseScore(state());
+		ChooseScore(state(), score);
 	}
 
 }

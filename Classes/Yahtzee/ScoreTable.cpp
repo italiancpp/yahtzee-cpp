@@ -1,6 +1,8 @@
 #include "ScoreTable.h"
 
 #include <numeric>
+#include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -77,14 +79,27 @@ void ScoreTable::AssignScoreIfNotAssigned(const string& name, size_t score)
 	}
 }
 
-//ostream& operator<<(ostream& stream, const ScoreTable& table)
-//{
-//	// INVECCHIAMENTO
-//	for (map<std::string, Score>::const_iterator it = table.scores.begin(); it != table.scores.end(); ++it)
-//		stream << it->first << " -> " << it->second.value << (it->second.assigned ? "" : " *") << endl;
-//	/*for (const auto& score : table.scores)
-//	{
-//		stream << score.first << " -> " << score.second.value << (score.second.assigned ? "" : " *") << endl;
-//	}*/
-//	return stream;
-//}
+ostream& operator<<(ostream& stream, const ScoreTable& table)
+{
+	// INVECCHIAMENTO
+	for (std::map<std::string, Score>::const_iterator it = table.scores.begin(); it != table.scores.end(); ++it)
+		stream << it->first << " -> " << it->second.value << (it->second.assigned ? "" : " *") << std::endl;
+	/*for (const auto& score : table.scores)
+	{
+		stream << score.first << " -> " << score.second.value << (score.second.assigned ? "" : " *") << endl;
+	}*/
+	return stream;
+}
+
+void ScoreTable::AssignFrom(const ScoreTable &other, Scores::ScoreName score)
+{
+	auto it = std::find_if(
+		scores.begin(),
+		scores.end(),
+		[=](const std::pair<const std::string, Score> &pair)
+		{
+			return pair.second.value == score;
+		});
+
+	AssignFrom(other, it->first);
+}
