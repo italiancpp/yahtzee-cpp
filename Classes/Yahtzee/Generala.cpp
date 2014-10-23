@@ -50,7 +50,31 @@ const size_t Generala::turns_number = Scores::scores_count;
 const size_t Generala::shots_number = 3;
 
 
+Generala::Generala( IDiceRoller& _roller, YahtzeeWriter *writer ) :	_playerNum(0), dice(dice_number, Die(1)), roller(_roller), yahtzeeWriter(writer), calculator(*yahtzeeWriter),
+	player_count(0u), current_state_index(1u)
+{
+	current_turn = Scores::scores_count;
+	current_shot = Generala::shots_number;
+}
 
+
+GameState& Generala::state()
+{
+	return _states[current_state_index];
+}
+
+size_t Generala::playerNumber()
+{
+	return _playerNum;
+}
+
+void Generala::playerNumber( size_t n )
+{
+	auto old = _playerNum;
+	_states.resize(n);
+	_playerNum = n;
+	yahtzeeWriter->numberOfPlayersChanged(old, _playerNum);
+}
 
 int Generala::Start()
 {
@@ -118,7 +142,7 @@ int Generala::Start()
 		}
 	}
 		
-	system("cls");
+	//system("cls");
 
 	size_t player_count = 1u;
 	
@@ -133,7 +157,7 @@ int Generala::Start()
 //		player_count++;
 //	}
 	
-	cout << endl;
+	//cout << endl;
 	auto worst_best = minmax_element(begin(_states), end(_states), [](const GameState& state1, const GameState& state2) 
 		{
 			return state1.currentScores.TotalScore() < state2.currentScores.TotalScore();
@@ -215,6 +239,7 @@ void Generala::selectScore(Scores::ScoreName score)
 	}
 
 }
+
 
 void YahtzeeWriter::numberOfPlayersChanged(size_t oldValue, size_t newValue)
 {

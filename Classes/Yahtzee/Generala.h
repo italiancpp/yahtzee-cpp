@@ -10,61 +10,42 @@
 class Generala
 {
 	size_t _playerNum;
+	
 	std::vector<GameState> _states;
 	size_t current_turn;
-	static const size_t dice_number;
-	static const unsigned short max_dice_value;
-	static const size_t turns_number;
-	static const size_t shots_number;
+		
+	static const size_t dice_number; // TODO: move to config object
+	static const unsigned short max_dice_value; // TODO: move to config object
+	static const size_t turns_number; // TODO: move to config object for player 
+	static const size_t shots_number; // TODO: move to config object
+
 	size_t player_count;
 	size_t current_state_index;
 	size_t current_shot;
 
 	std::vector<Die> dice;
-	IDiceRoller& roller;
-	//ScoreCalculator calculator(RuleGenerator::GenerateRules());
-
+	IDiceRoller& roller; // TODO: move to player (e.g. player X has a special roller)
+	
 	YahtzeeWriter *yahtzeeWriter;
 	ScoreCalculator calculator;
 
-
-
 public:
 
-	Generala(IDiceRoller& _roller, YahtzeeWriter *writer)
-	:	_playerNum(0), dice(dice_number, Die(1)), roller(_roller), yahtzeeWriter(writer), calculator(*yahtzeeWriter),
-		player_count(0u), current_state_index(1u)
-	{
-		current_turn = Scores::scores_count;
-		current_shot = Generala::shots_number;
-	}
+	Generala(IDiceRoller& _roller, YahtzeeWriter *writer);
 
-	GameState& state()
-	{
-		return _states[current_state_index];
-	}
-
-
-	size_t playerNumber()
-	{
-		return _playerNum;
-	}
-
-	void playerNumber(size_t n)
-	{
-		auto old = _playerNum;
-		_states.resize(n);
-		_playerNum = n;
-		yahtzeeWriter->numberOfPlayersChanged(old, _playerNum);
-	}
-
+	GameState& state();
+	size_t playerNumber();
+	void playerNumber(size_t n);
 	int Start();
-
     void rollDice();
-
-
 	void selectScore(Scores::ScoreName score);
-
 	void holdDice(std::vector<int> diceIndex);
+
+	// interfaccia minimale che potremmo realizzare
+	void StartGame(); // inizia il gioco (e.g. setta il primo turno)
+	void _rollDice(); // tira i dadi per giocatore corrente e calcola il punteggio
+	void _holdDice(const std::vector<int>& diceToHold); // fa hold di alcuni dadi
+	void endTurn(Scores::ScoreName score); // fine turno giocatore corrente
+	std::string getWinner();
 };
 
