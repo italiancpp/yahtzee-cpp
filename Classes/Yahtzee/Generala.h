@@ -6,6 +6,7 @@
 #include "ScoreCalculator.h"
 #include <vector>
 #include "YahtzeeWriter.h"
+#include "GameConfiguration.h"
 
 class Generala
 {
@@ -14,10 +15,7 @@ class Generala
 	std::vector<GameState> _states;
 	size_t current_turn;
 		
-	static const size_t dice_number; // TODO: move to config object
-	static const unsigned short max_dice_value; // TODO: move to config object
-	static const size_t turns_number; // TODO: move to config object for player 
-	static const size_t shots_number; // TODO: move to config object
+	static const size_t shots_number; // TODO: move to config object for player 
 
 	size_t player_count;
 	size_t current_state_index;
@@ -28,10 +26,10 @@ class Generala
 	
 	YahtzeeWriter *yahtzeeWriter;
 	ScoreCalculator calculator;
-
+	const GameConfiguration& configuration;
 public:
 
-	Generala(IDiceRoller& _roller, YahtzeeWriter *writer);
+	Generala(IDiceRoller& _roller, const GameConfiguration& conf, YahtzeeWriter *writer);
 
 	GameState& state();
 	size_t playerNumber();

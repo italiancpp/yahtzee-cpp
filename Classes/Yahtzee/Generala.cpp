@@ -44,14 +44,13 @@ void ChooseScore(GameState &state, Scores::ScoreName name)
 //	cout << state.currentScores;
 } 
 
-const size_t Generala::dice_number = 5;
-const unsigned short Generala::max_dice_value = 6;
-const size_t Generala::turns_number = Scores::scores_count;
 const size_t Generala::shots_number = 3;
 
 
-Generala::Generala( IDiceRoller& _roller, YahtzeeWriter *writer ) :	_playerNum(0), dice(dice_number, Die(1)), roller(_roller), yahtzeeWriter(writer), calculator(*yahtzeeWriter),
-	player_count(0u), current_state_index(1u)
+Generala::Generala( IDiceRoller& _roller, const GameConfiguration& conf, YahtzeeWriter *writer ) 
+	:	_playerNum(0), dice(conf.NumberOfDice, Die(1)), roller(_roller), 
+		yahtzeeWriter(writer), configuration(conf), calculator(*yahtzeeWriter),
+		player_count(0u), current_state_index(1u)
 {
 	current_turn = Scores::scores_count;
 	current_shot = Generala::shots_number;
@@ -89,7 +88,7 @@ int Generala::Start()
 //			system("cls");
 //			cout << "Player [" << player_count++ << "] Turn: " << turns_number - current_turn << " of " << turns_number << endl;
 //			cout << endl;
-			yahtzeeWriter->startTurnFor(player_count, current_turn, turns_number);
+			yahtzeeWriter->startTurnFor(player_count, current_turn, configuration.TurnsNumber);
 
 
 
@@ -184,7 +183,7 @@ void Generala::rollDice()
 	roller.Roll(dice);
 	print_dice(dice);
 
-	calculator.CheckScore(dice, max_dice_value, state());
+	calculator.CheckScore(dice, configuration.MaxDiceValue, state());
 	yahtzeeWriter->showPotentialScores(state().potentialScores);
 	hold_all(dice, false);
 
