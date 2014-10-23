@@ -16,8 +16,8 @@ class Generala
 	static const unsigned short max_dice_value;
 	static const size_t turns_number;
 	static const size_t shots_number;
-	size_t player_count = 1u;
-	size_t current_state_index = 0;
+	size_t player_count;
+	size_t current_state_index;
 	size_t current_shot;
 
 	std::vector<Die> dice;
@@ -32,9 +32,9 @@ class Generala
 public:
 
 	Generala(IDiceRoller& _roller, YahtzeeWriter *writer)
-	:_playerNum(0), dice(dice_number, Die(1)), roller(_roller), yahtzeeWriter(writer), calculator(*yahtzeeWriter)
+	:	_playerNum(0), dice(dice_number, Die(1)), roller(_roller), yahtzeeWriter(writer), calculator(*yahtzeeWriter),
+		player_count(0u), current_state_index(1u)
 	{
-		player_count = 1u;
 		current_turn = Scores::scores_count;
 		current_shot = Generala::shots_number;
 	}

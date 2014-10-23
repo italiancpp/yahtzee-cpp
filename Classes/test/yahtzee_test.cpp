@@ -6,8 +6,14 @@
 class MockYahtzeeWriter : public YahtzeeWriter
 {
 public:
+	MockYahtzeeWriter()
+		: _showPotentialScoresCalled(0)
+	{
+
+	}
+
 	ScoreTable _showPotentialScoresArgs;
-	int _showPotentialScoresCalled = 0;
+	int _showPotentialScoresCalled;
 
 
 	virtual void startTurnFor(size_t player_count, size_t current_turn, size_t const turns_number);
@@ -180,9 +186,13 @@ TEST_F(YahtzeeTest, frist_player_play_entire_turn)
 	_game->playerNumber(2);
 
 	_game->rollDice();
-	_game->holdDice({1, 3, 5});
+	int diceToHold[] = {1,3,5};
+	std::vector<int> diceToHoldVec(diceToHold, diceToHold+3);
+	_game->holdDice(diceToHoldVec);
 	_game->rollDice();
-	_game->holdDice({2});
+	diceToHoldVec.resize(1);
+	diceToHold[0] = 2;
+	_game->holdDice(diceToHoldVec);
 	_game->rollDice();
 	_game->selectScore(Scores::ScoreName::full);
 

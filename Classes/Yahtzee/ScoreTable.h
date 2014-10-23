@@ -22,7 +22,6 @@ class ScoreTable
 public:
 	ScoreTable();
 	~ScoreTable() {}
-	// INVECCHIAMENTO
 	ScoreTable(const ScoreTable& other);
 
 	void TryAssignScore(unsigned short dieValue, size_t score);

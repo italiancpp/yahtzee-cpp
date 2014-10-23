@@ -2,7 +2,6 @@
 #include "DiceRoller.h"
 #include "ScoreValues.h"
 #include "ScoreCalculator.h"
-//#include "RuleGenerator.h" // INVECCHIAMENTO
 #include "GameState.h"
 #include <string>
 #include <sstream>
