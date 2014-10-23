@@ -1,7 +1,8 @@
 #include "DicePlayer.h"
 
-DicePlayer::DicePlayer( const std::string& pName )
-	: name(pName)
+
+DicePlayer::DicePlayer( const std::string& pName, IDiceRoller& r )
+	: name(pName), roller(&r)
 {
 
 }

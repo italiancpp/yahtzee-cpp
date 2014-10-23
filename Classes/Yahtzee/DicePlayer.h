@@ -1,13 +1,14 @@
 #pragma once
-
-#include "GameState.h"
+#include <string>
+#include <functional>
+#include "DiceRoller.h"
 
 class DicePlayer
 {
 public:
-	DicePlayer(const std::string& pName);
+	DicePlayer(const std::string& pName, IDiceRoller& r);
 
-	const std::string name;
-	GameState state;
+	std::string name;
+	IDiceRoller* roller;
 };
 

@@ -3,29 +3,54 @@
 #include "../Yahtzee/Generala.h"
 #include "../Yahtzee/GameConfiguration.h"
 //#include <memory>
+#include "../Yahtzee/Yahtzee.h"
 
 class MockYahtzeeWriter : public YahtzeeWriter
 {
 public:
 	MockYahtzeeWriter()
-		: _showPotentialScoresCalled(0)
+		: called_showPotentialScores(0), called_newGameCreated(0), called_startTurnFor(0)
 	{
 
 	}
-
-	ScoreTable _showPotentialScoresArgs;
-	int _showPotentialScoresCalled;
-
 
 	virtual void startTurnFor(size_t player_count, size_t current_turn, size_t const turns_number);
 
 	virtual void showPotentialScores(ScoreTable scores)
 	{
-		++_showPotentialScoresCalled;
+		++called_showPotentialScores;
 		_showPotentialScoresArgs = scores;
 	}
 
+	virtual void newGameCreated( const std::vector<DicePlayer>& pPlayers, size_t pTotalTurns ) 
+	{
+		++called_newGameCreated;
+		players = pPlayers;
+		totalTurns = pTotalTurns;
+	}
+
+	virtual void _startTurnFor( DicePlayer& player, size_t currentTurn ) 
+	{
+		++called_startTurnFor;
+		startTurnFor_current_turn_arg = currentTurn;
+		startTurnFor_playerName = player.name;
+	}
+
 	ScoreTable lastPotentialScore;
+	ScoreTable _showPotentialScoresArgs;
+
+	// new stuff
+	std::vector<DicePlayer> players;
+	size_t totalTurns;
+
+	// function called info
+	int called_showPotentialScores;
+	int called_newGameCreated;
+	int called_startTurnFor;
+	
+	// functiona called args
+	size_t startTurnFor_current_turn_arg;
+	std::string startTurnFor_playerName;
 };
 
 class MockDiceRoller : public IDiceRoller
@@ -74,7 +99,7 @@ protected:
 	MockYahtzeeWriter _writer;
 };
 
-TEST_F(YahtzeeTest, DefaultConstructor)
+TEST_F(YahtzeeTest, empty_game_should_have_no_players)
 {
 	EXPECT_EQ(0u, _game->playerNumber());
 }
@@ -99,7 +124,7 @@ TEST_F(YahtzeeTest, after_roll_dice_show_potential_score)
 
     _game->rollDice();
 
-	EXPECT_TRUE(_writer._showPotentialScoresCalled > 0);
+	EXPECT_TRUE(_writer.called_showPotentialScores > 0);
 	EXPECT_EQ(expected, _writer._showPotentialScoresArgs);
 
 
@@ -171,3 +196,41 @@ void MockYahtzeeWriter::startTurnFor(size_t player_count, size_t current_turn, s
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+
+TEST(NewYahtzeeTest, on_creation_should_do_nothing)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	DicePlayer player1("Marco", GameConfiguration::DEFAULT_DICE_ROLLER);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+
+	ASSERT_EQ( writer.called_newGameCreated, 0 );
+}
+
+TEST(NewYahtzeeTest, on_new_game_should_notify_writer)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	DicePlayer player1("Marco", GameConfiguration::DEFAULT_DICE_ROLLER);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+	game.newGame();
+
+	ASSERT_EQ( writer.called_newGameCreated, 1 );
+}
+
+TEST(NewYahtzeeTest, on_start_turn_should_notify_writer_with_first_player)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	DicePlayer player1("Marco", GameConfiguration::DEFAULT_DICE_ROLLER);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+	game.newGame();
+	game.startTurn();
+
+	ASSERT_EQ( writer.called_startTurnFor, 1 );
+	ASSERT_EQ( writer.startTurnFor_current_turn_arg , 1u );
+	ASSERT_STRCASEEQ( writer.startTurnFor_playerName.c_str(), "Marco" );
+}

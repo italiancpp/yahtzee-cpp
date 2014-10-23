@@ -27,6 +27,7 @@ class Generala
 	YahtzeeWriter *yahtzeeWriter;
 	ScoreCalculator calculator;
 	const GameConfiguration& configuration;
+
 public:
 
 	Generala(IDiceRoller& _roller, const GameConfiguration& conf, YahtzeeWriter *writer);
@@ -45,5 +46,7 @@ public:
 	void _holdDice(const std::vector<int>& diceToHold); // fa hold di alcuni dadi
 	void endTurn(Scores::ScoreName score); // fine turno giocatore corrente
 	std::string getWinner();
+		// utils
+		size_t numberOfPlayers() const;
 };
 

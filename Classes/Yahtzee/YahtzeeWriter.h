@@ -14,10 +14,11 @@ public:
 	}
 
 	//
-	void _startTurnFor(DicePlayer& player, size_t currentTurn, size_t totalTurns);
+	virtual void newGameCreated(const std::vector<DicePlayer>& players, size_t totalTurns) = 0;
+	virtual void _startTurnFor(DicePlayer& player, size_t currentTurn) = 0;
 	void diceRolled(DicePlayer& player, const std::vector<int>& dice, size_t currentShot); // e.g. mostra il valore dei dadi
 	void _showPotentialScores(DicePlayer& player, const ScoreTable& scores); // e.g. mostra le score che hai fatto (comprese le attuali)
-	void endTurnFor(DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn, size_t totalTurns);
+	void endTurnFor(DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn);
 	void gameOver();
 
 };
