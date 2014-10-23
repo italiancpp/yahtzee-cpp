@@ -25,6 +25,7 @@ public:
 	virtual void newGameCreated( const std::vector<DicePlayer>& pPlayers, size_t pTotalTurns ) 
 	{
 		++called_newGameCreated;
+		newGameCreated_numOfPlayers = pPlayers.size();
 		players = pPlayers;
 		totalTurns = pTotalTurns;
 	}
@@ -49,6 +50,7 @@ public:
 	int called_startTurnFor;
 	
 	// functiona called args
+	size_t newGameCreated_numOfPlayers;
 	size_t startTurnFor_current_turn_arg;
 	std::string startTurnFor_playerName;
 };
@@ -219,6 +221,7 @@ TEST(NewYahtzeeTest, on_new_game_should_notify_writer)
 	game.newGame();
 
 	ASSERT_EQ( writer.called_newGameCreated, 1 );
+	ASSERT_EQ( writer.newGameCreated_numOfPlayers, 1 );
 }
 
 TEST(NewYahtzeeTest, on_start_turn_should_notify_writer_with_first_player)
