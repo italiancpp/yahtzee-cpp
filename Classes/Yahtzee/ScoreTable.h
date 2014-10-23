@@ -7,6 +7,12 @@
 
 struct Score
 {
+	Score()
+		: assigned(false), value(0u)
+	{
+
+	}
+	
 	bool assigned;
 	unsigned short value;
 
@@ -24,24 +30,14 @@ public:
 	~ScoreTable() {}
 	ScoreTable(const ScoreTable& other);
 
-	void TryAssignScore(unsigned short dieValue, size_t score);
-	void TryAssignScore(Scores::ScoreName scoreName, size_t score);
-	void AssignFrom(const ScoreTable& other, const std::string& score);
-	void AssignFrom(const ScoreTable& other, Scores::ScoreName score);
+	void AssignScoreIfNotAssigned(Scores::ScoreName scoreName, size_t score, bool markAsAssigned = false);
 	bool HasScore(Scores::ScoreName scoreName) const;
 	unsigned short TotalScore() const;
 
-	bool operator == (const ScoreTable& other) const
-	{
-		return scores == other.scores;
-	}
-
+	bool operator==(const ScoreTable& other) const;
 	friend std::ostream& operator<<(std::ostream& stream, const ScoreTable& table);
 private:
-
-	void AssignScoreIfNotAssigned(const std::string& name, size_t score);
-
-	std::map<std::string, Score> scores;
+	std::array<Score, Scores::scores_count> scores;
 };
 
 std::ostream& operator<<(std::ostream& stream, const ScoreTable& table);

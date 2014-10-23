@@ -45,7 +45,7 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 	{
 		for (auto single : histogram.find(1)->second)
 		{
-			state.potentialScores.TryAssignScore(single, single);
+			state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(single), single);
 		}
 	}
 	
@@ -54,7 +54,7 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 		_writer.writeLine("PAIR");
 		for (auto pair : histogram.find(2)->second)
 		{
-			state.potentialScores.TryAssignScore(pair, 2 * pair);
+			state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(pair), 2 * pair);
 		}
 	}
 	
@@ -65,43 +65,43 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 	{
 		_writer.writeLine("TRIS");
 		auto trisValue = histogram.find(3)->second.front();
-		state.potentialScores.TryAssignScore(trisValue, 3 * trisValue);
+		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(trisValue), 3 * trisValue);
 	}
 
 	if (histogram_has(histogram, 2) && histogram_has(histogram, 3))
 	{
 		_writer.writeLine("FULL");
-		state.potentialScores.TryAssignScore(Scores::full, Score(30, state));
+		state.potentialScores.AssignScoreIfNotAssigned(Scores::full, Score(30, state));
 	}
 
 	if (histogram_has(histogram, 4))
 	{
 		_writer.writeLine("POKER");
-		state.potentialScores.TryAssignScore(Scores::poker, Score(40, state));
+		state.potentialScores.AssignScoreIfNotAssigned(Scores::poker, Score(40, state));
 		auto pokerValue = histogram.find(4)->second.front();
-		state.potentialScores.TryAssignScore(pokerValue, 4 * pokerValue);
+		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(pokerValue), 4 * pokerValue);
 	}
 
 	if ((histogram.size() == 1) && histogram_has(histogram, 1))
 	{
 		_writer.writeLine("STRAIGHT");
-		state.potentialScores.TryAssignScore(Scores::straight, Score(20, state));
+		state.potentialScores.AssignScoreIfNotAssigned(Scores::straight, Score(20, state));
 	}
 
 	if (histogram_has(histogram, 5))
 	{
 		_writer.writeLine("GENERALA");
-		state.potentialScores.TryAssignScore(Scores::generala, Score(50, state));
+		state.potentialScores.AssignScoreIfNotAssigned(Scores::generala, Score(50, state));
 		auto generalaValue = histogram.find(5)->second.front();
-		state.potentialScores.TryAssignScore(generalaValue, 5 * generalaValue);
+		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
 	}
 
 	if (histogram_has(histogram, 5) && state.currentScores.HasScore(Scores::generala))
 	{
 		_writer.writeLine("DOUBLE GENERALA");
-		state.potentialScores.TryAssignScore(Scores::double_generala, Score(100, state));
+		state.potentialScores.AssignScoreIfNotAssigned(Scores::double_generala, Score(100, state));
 		auto generalaValue = histogram.find(5)->second.front();
-		state.potentialScores.TryAssignScore(generalaValue, 5 * generalaValue);
+		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
 	}
 
 	delete [] ranks;

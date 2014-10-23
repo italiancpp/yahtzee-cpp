@@ -38,3 +38,5 @@ static const std::array<std::string, Scores::scores_count> score_names =
 		"generala",
 		"double generala"
 	};
+
+Scores::ScoreName DieValueToScore(unsigned short dieValue);

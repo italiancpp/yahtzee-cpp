@@ -18,12 +18,7 @@ void GameState::NewShot()
 	currentShot++;
 }
 
-void GameState::AssignScoreFromPotential(const string& score)
-{
-	currentScores.AssignFrom(potentialScores, score);
-}
-
 void GameState::AssignScoreFromPotential(Scores::ScoreName score)
 {
-	currentScores.AssignFrom(potentialScores, score);
+	currentScores.AssignScoreIfNotAssigned(score, score, true);
 }

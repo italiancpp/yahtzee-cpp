@@ -179,7 +179,6 @@ void Generala::holdDice(vector<int> diceIndex)
 			dice[index-1].hold = true;
 		}
 	}
-
 }
 
 
@@ -189,7 +188,6 @@ void Generala::selectScore(Scores::ScoreName score)
 	{
 		cout << "Hold? ('S' if served) > ";
 		string toHold;
-//		getline( cin, toHold );
 
 		if (toHold == "S" || toHold == "s")
 		{
