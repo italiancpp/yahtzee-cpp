@@ -25,6 +25,7 @@ public:
 
 private:
 	void ResetDice();
+	bool CurrentPlayerHasMoreShots() const;
 
 	std::vector<DicePlayer> players;
 	std::vector<GameState> playerStates;

@@ -28,12 +28,15 @@ void Yahtzee::startTurn()
 
 void Yahtzee::rollDice()
 {
+	if (!CurrentPlayerHasMoreShots())
+		throw exception("Current player does not have more shots");
+
 	playerStates[currentPlayerIndex].NewShot();
 	players[currentPlayerIndex].RollDice(dice);
 	ScoreTable currentScore;
 	scoreCalculator.CheckScore(dice, playerStates[currentPlayerIndex].IsFirstShot(), currentScore);
 	
-	if (players[currentPlayerIndex].MaxNumberOfShots() == playerStates[currentPlayerIndex].GetShotNumber())
+	if (!CurrentPlayerHasMoreShots())
 	{
 		writer.diceRolledNoMoreShots(players[currentPlayerIndex], dice, playerStates[currentPlayerIndex].GetShotNumber(), currentScore);
 	}
@@ -55,6 +58,7 @@ void Yahtzee::endTurn( Scores::ScoreName score )
 	size_t currPlayer = currentPlayerIndex;
 	currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 	writer.endTurnFor(players[currPlayer], playerStates[currPlayer].currentScores, currentTurnNumber);
+
 }
 
 std::string Yahtzee::getWinner()
@@ -71,4 +75,9 @@ void Yahtzee::ResetDice()
 {
 	for (int i=0; i<dice.size(); ++i)
 		dice[i].hold = false;
+}
+
+bool Yahtzee::CurrentPlayerHasMoreShots() const
+{
+	return players[currentPlayerIndex].MaxNumberOfShots() > playerStates[currentPlayerIndex].GetShotNumber();
 }
