@@ -83,7 +83,8 @@ set(CORE_SRC
   Classes/Yahtzee/ScoreValues.cpp
   Classes/Yahtzee/GameConfiguration.cpp
   Classes/Yahtzee/Yahtzee.cpp
-  Classes/Yahtzee/Die.cpp)
+  Classes/Yahtzee/Die.cpp
+  Classes/Yahtzee/PlayerConfiguration.cpp)
 
 set(GAME_SRC ${GAME_SRC} ${CORE_SRC})
 

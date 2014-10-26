@@ -1,8 +1,8 @@
 #include "DicePlayer.h"
 
 
-DicePlayer::DicePlayer( const std::string& pName, IDiceRoller& r )
-	: name(pName), roller(&r)
+DicePlayer::DicePlayer( const std::string& pName, IDiceRoller& r, const DicePlayerConfiguration& conf )
+	: name(pName), roller(&r), configuration(conf)
 {
 
 }
@@ -10,4 +10,9 @@ DicePlayer::DicePlayer( const std::string& pName, IDiceRoller& r )
 void DicePlayer::RollDice( std::vector<Die>& dice )
 {
 	roller->Roll(dice);
+}
+
+size_t DicePlayer::MaxNumberOfShots() const
+{
+	return configuration.NumberOfShots;
 }

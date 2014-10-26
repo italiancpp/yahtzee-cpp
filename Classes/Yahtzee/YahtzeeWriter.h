@@ -17,6 +17,7 @@ public:
 	virtual void newGameCreated(const std::vector<DicePlayer>& players, size_t totalTurns) = 0;
 	virtual void _startTurnFor(DicePlayer& player, size_t currentTurn) = 0;
 	virtual void diceRolled(DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores) = 0; // e.g. mostra il valore dei dadi
+	virtual void diceRolledNoMoreShots(DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores) = 0; // e.g. mostra il valore dei dadi
 	virtual void endTurnFor(DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn) = 0;
 	void gameOver();
 };

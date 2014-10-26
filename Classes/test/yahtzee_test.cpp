@@ -52,6 +52,11 @@ public:
 		
 	}
 
+	virtual void diceRolledNoMoreShots( DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores ) 
+	{
+		throw std::exception("The method or operation is not implemented.");
+	}
+
 	ScoreTable lastPotentialScore;
 	ScoreTable _showPotentialScoresArgs;
 
