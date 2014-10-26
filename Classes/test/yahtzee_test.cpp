@@ -9,7 +9,8 @@ class MockYahtzeeWriter : public YahtzeeWriter
 {
 public:
 	MockYahtzeeWriter()
-		: called_showPotentialScores(0), called_newGameCreated(0), called_startTurnFor(0)
+		:	called_showPotentialScores(0), called_newGameCreated(0), called_startTurnFor(0),
+			called_diceRolled(0)
 	{
 
 	}
@@ -37,6 +38,20 @@ public:
 		startTurnFor_playerName = player.name;
 	}
 
+	virtual void diceRolled( DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores ) 
+	{
+		++called_diceRolled;
+		diceRolled_playerName = player.name;
+		diceRolled_diceValue = dice;
+		diceRolled_currentShot = currentShot;
+		diceRolled_potentialScores = scores;
+	}
+
+	virtual void endTurnFor( DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn ) 
+	{
+		
+	}
+
 	ScoreTable lastPotentialScore;
 	ScoreTable _showPotentialScoresArgs;
 
@@ -48,11 +63,16 @@ public:
 	int called_showPotentialScores;
 	int called_newGameCreated;
 	int called_startTurnFor;
-	
+	int called_diceRolled;
+
 	// functiona called args
 	size_t newGameCreated_numOfPlayers;
 	size_t startTurnFor_current_turn_arg;
 	std::string startTurnFor_playerName;
+	std::string diceRolled_playerName;
+	std::vector<Die> diceRolled_diceValue;
+	size_t diceRolled_currentShot;
+	ScoreTable diceRolled_potentialScores;
 };
 
 class MockDiceRoller : public IDiceRoller
@@ -63,6 +83,14 @@ public:
 		for (int i=0; i<5; i++)
 		{
 			mockedValues[i] = 1;
+		}
+	}
+
+	void AssignDiceValues(int values[5])
+	{
+		for (int i=0; i<5; i++)
+		{
+			mockedValues[i] = values[i];
 		}
 	}
 
@@ -237,3 +265,32 @@ TEST(NewYahtzeeTest, on_start_turn_should_notify_writer_with_first_player)
 	ASSERT_EQ( writer.startTurnFor_current_turn_arg , 1u );
 	ASSERT_STRCASEEQ( writer.startTurnFor_playerName.c_str(), "Marco" );
 }
+
+TEST(NewYahtzeeTest, on_roll_dice_should_notify_writer_and_calculate_score)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	MockDiceRoller mockedRoller;
+	int mockedDiceValueArr[5] = {1,1,2,3,4};
+	mockedRoller.AssignDiceValues(mockedDiceValueArr);
+	vector<Die> mockedDiceValue(mockedDiceValueArr, mockedDiceValueArr + 5);
+
+	ScoreTable mockedScores;
+	mockedScores.AssignScoreIfNotAssigned(Scores::one, 2, false);
+	mockedScores.AssignScoreIfNotAssigned(Scores::two, 2, false);
+	mockedScores.AssignScoreIfNotAssigned(Scores::three, 3, false);
+	mockedScores.AssignScoreIfNotAssigned(Scores::four, 4, false);
+
+	DicePlayer player1("Marco", mockedRoller);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+	game.newGame();
+	game.startTurn();
+	game.rollDice();
+
+	ASSERT_EQ( writer.called_diceRolled, 1 );
+	ASSERT_EQ( writer.diceRolled_currentShot , 1u );
+	ASSERT_EQ( writer.diceRolled_diceValue , mockedDiceValue );
+	ASSERT_EQ( writer.diceRolled_potentialScores , mockedScores );
+	ASSERT_STRCASEEQ( writer.diceRolled_playerName.c_str(), "Marco" );
+}
+

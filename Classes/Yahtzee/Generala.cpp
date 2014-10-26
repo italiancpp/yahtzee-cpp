@@ -37,7 +37,7 @@ void ChooseScore(GameState &state, Scores::ScoreName name)
 //	getline(cin, line);
 	cout << "CHOSEN " << line << endl;
 	
-	state.AssignScoreFromPotential(name);
+	//state.AssignScoreFromPotential(name);
 	
 	cout << endl;
 	cout << "CURRENT SCORES" << endl;
@@ -49,7 +49,7 @@ const size_t Generala::shots_number = 3;
 
 Generala::Generala( IDiceRoller& _roller, const GameConfiguration& conf, YahtzeeWriter *writer ) 
 	:	_playerNum(0), dice(conf.NumberOfDice, Die(1)), roller(_roller), 
-		yahtzeeWriter(writer), configuration(conf), calculator(*yahtzeeWriter),
+		yahtzeeWriter(writer), configuration(conf), calculator(*yahtzeeWriter, conf.MaxDiceValue),
 		player_count(0u), current_state_index(1u)
 {
 	current_turn = Scores::scores_count;
@@ -183,8 +183,8 @@ void Generala::rollDice()
 	roller.Roll(dice);
 	print_dice(dice);
 
-	calculator.CheckScore(dice, configuration.MaxDiceValue, state());
-	yahtzeeWriter->showPotentialScores(state().potentialScores);
+	//calculator.CheckScore(dice, configuration.MaxDiceValue, state());
+	//yahtzeeWriter->showPotentialScores(state().potentialScores);
 	hold_all(dice, false);
 
 	cout << endl;

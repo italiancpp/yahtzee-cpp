@@ -4,6 +4,7 @@
 #include "ScoreValues.h"
 #include "DicePlayer.h"
 #include "GameState.h"
+#include "ScoreCalculator.h"
 
 class GameConfiguration;
 class YahtzeeWriter;
@@ -23,11 +24,15 @@ public:
 	size_t numberOfPlayers() const;
 
 private:
+	void ResetDice();
+
 	std::vector<DicePlayer> players;
 	std::vector<GameState> playerStates;
 	const GameConfiguration& configuration;
 	YahtzeeWriter& writer;
+	ScoreCalculator scoreCalculator;
 
 	// game-state info
 	size_t currentPlayerIndex, currentTurnNumber;
+	std::vector<Die> dice;
 };

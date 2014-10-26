@@ -10,11 +10,11 @@ public:
 	inline bool IsFirstShot() const;
 	void NewTurn();
 	void NewShot();
-	
-	void AssignScoreFromPotential(Scores::ScoreName score);
+	size_t GetShotNumber() const;
+
+	//void AssignScoreFromPotential(Scores::ScoreName score);
 
 	ScoreTable currentScores;
-	ScoreTable potentialScores;
 
 private:
 	size_t currentTurn;

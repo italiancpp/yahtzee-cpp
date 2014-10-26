@@ -2,11 +2,10 @@
 
 struct Die
 {
-	Die(unsigned short pValue, bool pHold = false) 
-		: value(pValue), hold(pHold)
-	{}
+	Die(unsigned short pValue, bool pHold = false);
 
 	unsigned short value;
 	bool hold;
 };
 
+bool operator==(const Die& first, const Die& second);

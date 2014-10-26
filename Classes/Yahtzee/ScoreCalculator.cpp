@@ -1,6 +1,10 @@
 #include "ScoreCalculator.h"
+#include <iostream>
 
 using namespace std;
+
+ScoreCalculator::ScoreCalculator( YahtzeeWriter &writer, unsigned short _maxDiceValue ) : _writer(_writer), maxDiceValue(_maxDiceValue)
+{}
 
 ScoreCalculator::~ScoreCalculator()
 {}
@@ -27,37 +31,36 @@ inline bool histogram_has(const Histogram& histogram, unsigned short val)
 	return histogram.find(val) != end(histogram);
 }
 
-inline unsigned short Score(unsigned short score, const GameState& state, unsigned short extraIfFirstRoll = 5)
+inline unsigned short Score(unsigned short score, bool isFirstShot, unsigned short extraIfFirstRoll = 5)
 {
-	return state.IsFirstShot() ? score + extraIfFirstRoll : score;
+	return isFirstShot ? score + extraIfFirstRoll : score;
 }
 
-
-void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDiceValue, GameState& state) const
+void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort, ScoreTable& currentTable) const
 {
-	unsigned short* ranks = new unsigned short[maxDiceValue];
+	unsigned short* ranks = new unsigned short[maxDiceValue]();
 	CalculateRanks(dice, ranks);
 
 	Histogram histogram;
 	CalculateHistogram(ranks, maxDiceValue, histogram);
-	
+
 	if (histogram_has(histogram, 1))
 	{
 		for (auto single : histogram.find(1)->second)
 		{
-			state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(single), single);
+			currentTable.AssignScoreIfNotAssigned(DieValueToScore(single), single);
 		}
 	}
-	
+
 	if (histogram_has(histogram, 2))
 	{
 		_writer.writeLine("PAIR");
 		for (auto pair : histogram.find(2)->second)
 		{
-			state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(pair), 2 * pair);
+			currentTable.AssignScoreIfNotAssigned(DieValueToScore(pair), 2 * pair);
 		}
 	}
-	
+
 	if ((histogram_has(histogram, 2)) && histogram.find(2)->second.size() == 2)
 		_writer.writeLine("DOULE PAIR");
 
@@ -65,44 +68,49 @@ void ScoreCalculator::CheckScore(const vector<Die>& dice, unsigned short maxDice
 	{
 		_writer.writeLine("TRIS");
 		auto trisValue = histogram.find(3)->second.front();
-		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(trisValue), 3 * trisValue);
+		currentTable.AssignScoreIfNotAssigned(DieValueToScore(trisValue), 3 * trisValue);
 	}
 
 	if (histogram_has(histogram, 2) && histogram_has(histogram, 3))
 	{
 		_writer.writeLine("FULL");
-		state.potentialScores.AssignScoreIfNotAssigned(Scores::full, Score(30, state));
+		currentTable.AssignScoreIfNotAssigned(Scores::full, Score(30, isFirstShort));
 	}
 
 	if (histogram_has(histogram, 4))
 	{
 		_writer.writeLine("POKER");
-		state.potentialScores.AssignScoreIfNotAssigned(Scores::poker, Score(40, state));
+		currentTable.AssignScoreIfNotAssigned(Scores::poker, Score(40, isFirstShort));
 		auto pokerValue = histogram.find(4)->second.front();
-		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(pokerValue), 4 * pokerValue);
+		currentTable.AssignScoreIfNotAssigned(DieValueToScore(pokerValue), 4 * pokerValue);
 	}
 
 	if ((histogram.size() == 1) && histogram_has(histogram, 1))
 	{
 		_writer.writeLine("STRAIGHT");
-		state.potentialScores.AssignScoreIfNotAssigned(Scores::straight, Score(20, state));
+		currentTable.AssignScoreIfNotAssigned(Scores::straight, Score(20, isFirstShort));
 	}
 
 	if (histogram_has(histogram, 5))
 	{
 		_writer.writeLine("GENERALA");
-		state.potentialScores.AssignScoreIfNotAssigned(Scores::generala, Score(50, state));
+		currentTable.AssignScoreIfNotAssigned(Scores::generala, Score(50, isFirstShort));
 		auto generalaValue = histogram.find(5)->second.front();
-		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
+		currentTable.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
 	}
 
-	if (histogram_has(histogram, 5) && state.currentScores.HasScore(Scores::generala))
+	/*if (histogram_has(histogram, 5) && state.currentScores.HasScore(Scores::generala))
 	{
 		_writer.writeLine("DOUBLE GENERALA");
-		state.potentialScores.AssignScoreIfNotAssigned(Scores::double_generala, Score(100, state));
+		currentTable.AssignScoreIfNotAssigned(Scores::double_generala, Score(100, isFirstShort));
 		auto generalaValue = histogram.find(5)->second.front();
-		state.potentialScores.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
-	}
+		currentTable.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
+	}*/
 
 	delete [] ranks;
+}
+
+void ScoreCalculator::CheckScore(const vector<Die>& dice, GameState& state) const
+{
+	//CheckScore(dice, state.IsFirstShot(), state.potentialScores);
 }

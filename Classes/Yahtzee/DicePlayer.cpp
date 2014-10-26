@@ -6,3 +6,8 @@ DicePlayer::DicePlayer( const std::string& pName, IDiceRoller& r )
 {
 
 }
+
+void DicePlayer::RollDice( std::vector<Die>& dice )
+{
+	roller->Roll(dice);
+}

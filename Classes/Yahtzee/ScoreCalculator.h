@@ -13,14 +13,14 @@ class ScoreCalculator
 {
 public:
 	
-	ScoreCalculator(YahtzeeWriter &writer) : _writer(_writer)
-	{}
-
+	ScoreCalculator(YahtzeeWriter &writer, unsigned short _maxDiceValue);
 	~ScoreCalculator();
 
-	void CheckScore(const std::vector<Die>& dice, unsigned short maxDiceValue, GameState& currentTable) const;
+	void CheckScore(const std::vector<Die>& dice, GameState& currentTable) const;
+	void CheckScore(const std::vector<Die>& dice, bool isFirstShot, ScoreTable& currentTable) const;
 
 private:
 	YahtzeeWriter &_writer;
+	unsigned short maxDiceValue;
 };
 
