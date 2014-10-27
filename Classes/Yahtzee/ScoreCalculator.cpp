@@ -99,14 +99,6 @@ void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort
 		currentTable.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
 	}
 
-	/*if (histogram_has(histogram, 5) && state.currentScores.HasScore(Scores::generala))
-	{
-		_writer.writeLine("DOUBLE GENERALA");
-		currentTable.AssignScoreIfNotAssigned(Scores::double_generala, Score(100, isFirstShort));
-		auto generalaValue = histogram.find(5)->second.front();
-		currentTable.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
-	}*/
-
 	delete [] ranks;
 }
 

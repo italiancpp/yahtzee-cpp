@@ -16,7 +16,6 @@ namespace Scores
 		full,
 		poker,
 		generala,
-		double_generala,
 
 		placeholder_last
 	};
@@ -36,7 +35,6 @@ static const std::array<std::string, Scores::scores_count> score_names =
 		"full",
 		"poker",
 		"generala",
-		"double generala"
 	};
 
 Scores::ScoreName DieValueToScore(unsigned short dieValue);
