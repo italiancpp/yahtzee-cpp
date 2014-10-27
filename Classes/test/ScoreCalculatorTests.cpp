@@ -41,12 +41,9 @@ TEST(ScoreCalculatorTests, on_pair)
 {
 	FakeWriter writer;
 	ScoreCalculator calculator(writer, 6);
-	vector<Die> dice(5, Die(1));
-	dice[1] = 1;
-	dice[2] = 3;
-	dice[3] = 4;
-	dice[4] = 5;
-
+	int diceArr[] = {1,1,3,4,5};
+	vector<Die> dice(diceArr, diceArr+5);
+	
 	ScoreTable expectedTable;
 	expectedTable.AssignScoreIfNotAssigned(Scores::one, 2);
 	expectedTable.AssignScoreIfNotAssigned(Scores::three, 3);
