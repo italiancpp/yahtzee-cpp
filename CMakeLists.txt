@@ -276,6 +276,7 @@ endif()
 enable_testing()
 set(SRC_TEST
   Classes/test/yahtzee_test.cpp
+  Classes/test/ScoreCalculatorTests.cpp
 )
 
 ### TESTING TARGET ###
