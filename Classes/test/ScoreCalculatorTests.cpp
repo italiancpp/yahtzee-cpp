@@ -21,16 +21,23 @@ class FakeWriter : public YahtzeeWriter
 	{
 	}
 
-	virtual void diceRolled( DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores ) 
+	virtual void diceRolled( const std::vector<Die>& dice, size_t currentShot, size_t remainingShots ) 
 	{
-	}
-
-	virtual void diceRolledNoMoreShots( DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores ) 
-	{
+		
 	}
 
 	virtual void endTurnFor( DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn ) 
 	{
+	}
+
+	virtual void scoreCalculated( const ScoreTable& scores ) 
+	{
+		
+	}
+
+	virtual void gameOver() 
+	{
+		
 	}
 
 };

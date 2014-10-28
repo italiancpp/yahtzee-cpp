@@ -18,12 +18,13 @@ void Yahtzee::newGame()
 	playerStates.clear(); playerStates.resize(players.size());
 	currentTurnNumber = 1u;
 	writer.newGameCreated(players, configuration.TurnsNumber);
-}
-
-void Yahtzee::startTurn()
-{
 	playerStates[currentPlayerIndex].NewTurn();
 	writer._startTurnFor(players[currentPlayerIndex], currentTurnNumber);
+}
+
+GameState& Yahtzee::CurrentState()
+{
+	return playerStates[currentPlayerIndex];
 }
 
 void Yahtzee::rollDice()
@@ -31,19 +32,11 @@ void Yahtzee::rollDice()
 	if (!CurrentPlayerHasMoreShots())
 		throw exception("Current player does not have more shots");
 
-	playerStates[currentPlayerIndex].NewShot();
+	CurrentState().NewShot();
 	players[currentPlayerIndex].RollDice(dice);
-	ScoreTable currentScore;
-	scoreCalculator.CheckScore(dice, playerStates[currentPlayerIndex].IsFirstShot(), currentScore);
-	
-	if (!CurrentPlayerHasMoreShots())
-	{
-		writer.diceRolledNoMoreShots(players[currentPlayerIndex], dice, playerStates[currentPlayerIndex].GetShotNumber(), currentScore);
-	}
-	else
-	{
-		writer.diceRolled(players[currentPlayerIndex], dice, playerStates[currentPlayerIndex].GetShotNumber(), currentScore);
-	}
+	scoreCalculator.CheckScore(dice, CurrentState().IsFirstShot(), CurrentState().potentialScores);
+	writer.scoreCalculated(CurrentState().potentialScores);
+	writer.diceRolled(dice, CurrentState().GetShotNumber(), players[currentPlayerIndex].MaxNumberOfShots() - CurrentState().GetShotNumber());
 }
 
 void Yahtzee::holdDice( const std::vector<int>& diceToHold )
@@ -52,13 +45,22 @@ void Yahtzee::holdDice( const std::vector<int>& diceToHold )
 		dice[diceToHold[i]].hold = true;
 }
 
-void Yahtzee::endTurn( Scores::ScoreName score )
+void Yahtzee::SelectScore( Scores::ScoreName score )
 {
-	ResetDice();
 	size_t currPlayer = currentPlayerIndex;
 	currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-	writer.endTurnFor(players[currPlayer], playerStates[currPlayer].currentScores, currentTurnNumber);
-
+	writer.endTurnFor(players[currPlayer], CurrentState().currentScores, currentTurnNumber);
+	if (currentPlayerIndex == 0) // Verifico che il turno sia finito...
+	{
+		++currentTurnNumber;
+		// verifico che il gioco sia finito
+		if (currentTurnNumber > configuration.TurnsNumber) 
+		{
+			writer.gameOver();
+			return;
+		}
+	}
+	writer._startTurnFor(players[currentPlayerIndex], currentTurnNumber);
 }
 
 std::string Yahtzee::getWinner()

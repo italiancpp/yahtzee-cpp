@@ -11,10 +11,11 @@ public:
 	void NewTurn();
 	void NewShot();
 	size_t GetShotNumber() const;
-
-	//void AssignScoreFromPotential(Scores::ScoreName score);
+	
+	void AssignScoreFromPotential(Scores::ScoreName scoreName, size_t score);
 
 	ScoreTable currentScores;
+	ScoreTable potentialScores;
 
 private:
 	size_t currentTurn;

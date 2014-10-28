@@ -9,19 +9,14 @@ class MockYahtzeeWriter : public YahtzeeWriter
 {
 public:
 	MockYahtzeeWriter()
-		:	called_showPotentialScores(0), called_newGameCreated(0), called_startTurnFor(0),
-			called_diceRolled(0)
+		:	called_newGameCreated(0), called_startTurnFor(0),
+			called_diceRolled(0), called_scoreCalculated(0), called_endTurnFor(0),
+			called_gameOver(0)
 	{
 
 	}
 
 	virtual void startTurnFor(size_t player_count, size_t current_turn, size_t const turns_number);
-
-	virtual void showPotentialScores(ScoreTable scores)
-	{
-		++called_showPotentialScores;
-		_showPotentialScoresArgs = scores;
-	}
 
 	virtual void newGameCreated( const std::vector<DicePlayer>& pPlayers, size_t pTotalTurns ) 
 	{
@@ -38,23 +33,29 @@ public:
 		startTurnFor_playerName = player.name;
 	}
 
-	virtual void diceRolled( DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores ) 
+	virtual void diceRolled( const std::vector<Die>& dice, size_t currentShot, size_t remainingShots ) 
 	{
 		++called_diceRolled;
-		diceRolled_playerName = player.name;
 		diceRolled_diceValue = dice;
 		diceRolled_currentShot = currentShot;
-		diceRolled_potentialScores = scores;
+		diceRolled_remaningShots = remainingShots;
 	}
 
 	virtual void endTurnFor( DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn ) 
 	{
-		
+		++called_endTurnFor;
+		endTurnFor_playerName = player.name;
 	}
 
-	virtual void diceRolledNoMoreShots( DicePlayer& player, const std::vector<Die>& dice, size_t currentShot, const ScoreTable& scores ) 
+	virtual void scoreCalculated( const ScoreTable& scores ) 
 	{
-		throw std::exception("The method or operation is not implemented.");
+		++called_scoreCalculated;	
+		scoreCalculated_scores = scores;
+	}
+
+	virtual void gameOver() 
+	{
+		++called_gameOver;
 	}
 
 	ScoreTable lastPotentialScore;
@@ -65,19 +66,22 @@ public:
 	size_t totalTurns;
 
 	// function called info
-	int called_showPotentialScores;
 	int called_newGameCreated;
 	int called_startTurnFor;
 	int called_diceRolled;
+	int called_scoreCalculated;
+	int called_endTurnFor;
+	int called_gameOver;
 
 	// functiona called args
 	size_t newGameCreated_numOfPlayers;
 	size_t startTurnFor_current_turn_arg;
 	std::string startTurnFor_playerName;
-	std::string diceRolled_playerName;
 	std::vector<Die> diceRolled_diceValue;
+	size_t diceRolled_remaningShots;
 	size_t diceRolled_currentShot;
-	ScoreTable diceRolled_potentialScores;
+	ScoreTable scoreCalculated_scores;
+	std::string endTurnFor_playerName; 
 };
 
 class MockDiceRoller : public IDiceRoller
@@ -147,23 +151,6 @@ TEST_F(YahtzeeTest, show_play_name_after_set_number_of_Player)
 	//assert playerNumberOne
 
 	EXPECT_EQ(2, _game->playerNumber());
-}
-
-TEST_F(YahtzeeTest, after_roll_dice_show_potential_score)
-{
-//	int tmp[] = {1, 2, 3, 4, 5};
-	ScoreTable expected;
-//	expected.TryAssignScore(Scores::straight, 260);
-//	memcpy(&_roller.mockedValues, tmp, sizeof(tmp));
-    _game->playerNumber(2u);
-
-    _game->rollDice();
-
-	EXPECT_TRUE(_writer.called_showPotentialScores > 0);
-	EXPECT_EQ(expected, _writer._showPotentialScoresArgs);
-
-
-
 }
 
 TEST_F(YahtzeeTest, current_player_can_choose_score)
@@ -264,7 +251,6 @@ TEST(NewYahtzeeTest, on_start_turn_should_notify_writer_with_first_player)
 	MockYahtzeeWriter writer;
 	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
 	game.newGame();
-	game.startTurn();
 
 	ASSERT_EQ( writer.called_startTurnFor, 1 );
 	ASSERT_EQ( writer.startTurnFor_current_turn_arg , 1u );
@@ -289,13 +275,92 @@ TEST(NewYahtzeeTest, on_roll_dice_should_notify_writer_and_calculate_score)
 	MockYahtzeeWriter writer;
 	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
 	game.newGame();
-	game.startTurn();
 	game.rollDice();
 
 	ASSERT_EQ( writer.called_diceRolled, 1 );
 	ASSERT_EQ( writer.diceRolled_currentShot , 1u );
 	ASSERT_EQ( writer.diceRolled_diceValue , mockedDiceValue );
-	ASSERT_EQ( writer.diceRolled_potentialScores , mockedScores );
-	ASSERT_STRCASEEQ( writer.diceRolled_playerName.c_str(), "Marco" );
+	ASSERT_EQ( writer.diceRolled_remaningShots, 2);
+	ASSERT_EQ( writer.called_scoreCalculated, 1);
+	ASSERT_EQ( writer.scoreCalculated_scores, mockedScores );
 }
 
+TEST(NewYahtzeeTest, on_roll_dice_three_times_should_remain_no_shots)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	MockDiceRoller mockedRoller;
+	int mockedDiceValueArr[5] = {1,1,2,3,4};
+	mockedRoller.AssignDiceValues(mockedDiceValueArr);
+	vector<Die> mockedDiceValue(mockedDiceValueArr, mockedDiceValueArr + 5);
+
+	DicePlayer player1("Marco", mockedRoller);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+	game.newGame();
+	game.rollDice();
+	game.rollDice();
+	game.rollDice();
+
+	// e se tiriamo più di tre volte???
+
+	ASSERT_EQ( writer.called_diceRolled, 3 );
+	ASSERT_EQ( writer.diceRolled_currentShot , 3u );
+	ASSERT_EQ( writer.diceRolled_remaningShots, 0u);
+	ASSERT_EQ( writer.called_scoreCalculated, 3);
+}
+
+TEST(NewYahtzeeTest, on_select_score_should_end_turn_for_current_player)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	MockDiceRoller mockedRoller;
+	int mockedDiceValueArr[5] = {1,1,1,1,1};
+	mockedRoller.AssignDiceValues(mockedDiceValueArr);
+	vector<Die> mockedDiceValue(mockedDiceValueArr, mockedDiceValueArr + 5);
+
+	DicePlayer player1("Marco", mockedRoller);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+	game.newGame();
+	game.rollDice();
+	game.SelectScore(Scores::generala);
+
+	ASSERT_EQ( writer.called_endTurnFor, 1 );
+	ASSERT_STRCASEEQ( writer.endTurnFor_playerName.c_str(), "Marco" );
+}
+
+TEST(NewYahtzeeTest, on_select_score_should_start_turn_for_other_player)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	MockDiceRoller mockedRoller;
+	int mockedDiceValueArr[5] = {1,1,1,1,1};
+	mockedRoller.AssignDiceValues(mockedDiceValueArr);
+	vector<Die> mockedDiceValue(mockedDiceValueArr, mockedDiceValueArr + 5);
+
+	DicePlayer player1("Marco", mockedRoller);
+	DicePlayer player2("Gianluca", mockedRoller);
+	vector<DicePlayer> players; 
+	players.push_back(player1); 
+	players.push_back(player2); 
+	MockYahtzeeWriter writer;
+	Yahtzee game(players, defaultConfig, writer);
+	game.newGame();
+	game.rollDice();
+	game.SelectScore(Scores::generala);
+
+	ASSERT_EQ( writer.called_startTurnFor, 2 );
+	ASSERT_EQ( writer.startTurnFor_playerName, "Gianluca" );
+}
+
+TEST(NewYahtzeeTest, on_select_score_with_only_one_turn_should_call_game_over)
+{
+	GameConfiguration oneTurnConfig(5, 6, 1);
+
+	DicePlayer player1("Marco", GameConfiguration::DEFAULT_DICE_ROLLER);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), oneTurnConfig, writer);
+	game.newGame();
+	game.rollDice();
+	game.SelectScore(Scores::generala);
+
+	ASSERT_EQ( writer.called_gameOver, 1 );
+}

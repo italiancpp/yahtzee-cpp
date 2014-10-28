@@ -14,14 +14,14 @@ void GameState::NewTurn()
 
 void GameState::NewShot()
 {
-	//potentialScores = currentScores;
+	potentialScores = currentScores;
 	currentShot++;
 }
 
-//void GameState::AssignScoreFromPotential(Scores::ScoreName score)
-//{
-//	currentScores.AssignScoreIfNotAssigned(score, score, true);
-//}
+void GameState::AssignScoreFromPotential(Scores::ScoreName scoreName, size_t score)
+{
+	currentScores.AssignScoreIfNotAssigned(scoreName, score, true);
+}
 
 size_t GameState::GetShotNumber() const
 {
