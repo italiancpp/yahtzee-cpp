@@ -1,5 +1,5 @@
 #include "GameConfiguration.h"
-#include "..\Classes\Yahtzee\ScoreValues.h"
+#include "../Classes/Yahtzee/ScoreValues.h"
 
 static const unsigned short DEFAULT_DICE_NUMBER = 5;
 static const unsigned short DEFAULT_MAX_DICE_VALUE = 6;

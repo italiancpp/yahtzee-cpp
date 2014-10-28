@@ -1,6 +1,7 @@
 #include "Yahtzee.h"
 #include "YahtzeeWriter.h"
 #include "GameConfiguration.h"
+#include <stdexcept>
 
 using namespace std;
 
@@ -30,7 +31,7 @@ GameState& Yahtzee::CurrentState()
 void Yahtzee::rollDice()
 {
 	if (!CurrentPlayerHasMoreShots())
-		throw exception("Current player does not have more shots");
+		throw domain_error("Current player does not have more shots");
 
 	CurrentState().NewShot();
 	players[currentPlayerIndex].RollDice(dice);
