@@ -291,3 +291,8 @@ else()
   target_link_libraries(yahtzee_test gtest_main gtest pthread)
 endif()
 #add_custom_target(rt COMMAND "./yahtzee_test" DEPENDS yahtzee_test)
+########################
+
+### Console Target ###
+add_executable(yahtzee_console ${CORE_SRC} Classes/main_console.cpp)
+######################
