@@ -3,7 +3,8 @@
 
 using namespace std;
 
-ScoreCalculator::ScoreCalculator( YahtzeeWriter &writer, unsigned short _maxDiceValue ) : _writer(_writer), maxDiceValue(_maxDiceValue)
+ScoreCalculator::ScoreCalculator( unsigned short _maxDiceValue ) 
+	: maxDiceValue(_maxDiceValue)
 {}
 
 ScoreCalculator::~ScoreCalculator()
@@ -54,32 +55,25 @@ void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort
 
 	if (histogram_has(histogram, 2))
 	{
-		_writer.writeLine("PAIR");
 		for (auto pair : histogram.find(2)->second)
 		{
 			currentTable.AssignScoreIfNotAssigned(DieValueToScore(pair), 2 * pair);
 		}
 	}
 
-	if ((histogram_has(histogram, 2)) && histogram.find(2)->second.size() == 2)
-		_writer.writeLine("DOULE PAIR");
-
 	if (histogram_has(histogram, 3))
 	{
-		_writer.writeLine("TRIS");
 		auto trisValue = histogram.find(3)->second.front();
 		currentTable.AssignScoreIfNotAssigned(DieValueToScore(trisValue), 3 * trisValue);
 	}
 
 	if (histogram_has(histogram, 2) && histogram_has(histogram, 3))
 	{
-		_writer.writeLine("FULL");
 		currentTable.AssignScoreIfNotAssigned(Scores::full, Score(30, isFirstShort));
 	}
 
 	if (histogram_has(histogram, 4))
 	{
-		_writer.writeLine("POKER");
 		currentTable.AssignScoreIfNotAssigned(Scores::poker, Score(40, isFirstShort));
 		auto pokerValue = histogram.find(4)->second.front();
 		currentTable.AssignScoreIfNotAssigned(DieValueToScore(pokerValue), 4 * pokerValue);
@@ -87,22 +81,15 @@ void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort
 
 	if ((histogram.size() == 1) && histogram_has(histogram, 1))
 	{
-		_writer.writeLine("STRAIGHT");
 		currentTable.AssignScoreIfNotAssigned(Scores::straight, Score(20, isFirstShort));
 	}
 
 	if (histogram_has(histogram, 5))
 	{
-		_writer.writeLine("GENERALA");
 		currentTable.AssignScoreIfNotAssigned(Scores::generala, Score(50, isFirstShort));
 		auto generalaValue = histogram.find(5)->second.front();
 		currentTable.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
 	}
 
 	delete [] ranks;
-}
-
-void ScoreCalculator::CheckScore(const vector<Die>& dice, GameState& state) const
-{
-	//CheckScore(dice, state.IsFirstShot(), state.potentialScores);
 }

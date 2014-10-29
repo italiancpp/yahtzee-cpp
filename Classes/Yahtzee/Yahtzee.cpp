@@ -9,7 +9,7 @@ Yahtzee::Yahtzee( const std::vector<DicePlayer>& _players, const GameConfigurati
 	:	players(_players), playerStates(_players.size()), 
 		configuration(_conf), writer(_writer),
 		currentPlayerIndex(0u), currentTurnNumber(0u),
-		dice(_conf.NumberOfDice, 1), scoreCalculator(_writer, _conf.MaxDiceValue)
+		dice(_conf.NumberOfDice, 1), scoreCalculator(_conf.MaxDiceValue)
 {
 
 }

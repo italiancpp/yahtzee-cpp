@@ -1,46 +1,6 @@
 #include "gtest/gtest.h"
 #include "../Yahtzee/ScoreCalculator.h"
-#include "../Yahtzee/YahtzeeWriter.h"
 #include <vector>
-
-class FakeWriter : public YahtzeeWriter
-{
-	virtual void startTurnFor( size_t player_count, size_t current_turn, size_t const turns_number ) 
-	{
-	}
-
-	virtual void showPotentialScores( ScoreTable scores ) 
-	{
-	}
-
-	virtual void newGameCreated( const std::vector<DicePlayer>& players, size_t totalTurns ) 
-	{
-	}
-
-	virtual void _startTurnFor( DicePlayer& player, size_t currentTurn ) 
-	{
-	}
-
-	virtual void diceRolled( const std::vector<Die>& dice, size_t currentShot, size_t remainingShots ) 
-	{
-		
-	}
-
-	virtual void endTurnFor( DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn ) 
-	{
-	}
-
-	virtual void scoreCalculated( const ScoreTable& scores ) 
-	{
-		
-	}
-
-	virtual void gameOver() 
-	{
-		
-	}
-
-};
 
 using namespace std;
 
@@ -48,7 +8,7 @@ class ScoreCalculatorTests : public testing::Test
 {
 public:
 	ScoreCalculatorTests()
-		: calculator(writer, 6), dice(5, Die(1))
+		: calculator(6), dice(5, Die(1))
 	{
 
 	}
@@ -57,7 +17,6 @@ protected:
 	void CheckScoreOnFirstShot(const ScoreTable& expected);
 	void CheckScoreOnShotDifferentFromFirst(const ScoreTable& expectedTable);
 	
-	FakeWriter writer;
 	ScoreCalculator calculator;
 	vector<Die> dice;
 };

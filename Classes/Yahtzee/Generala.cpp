@@ -49,7 +49,7 @@ const size_t Generala::shots_number = 3;
 
 Generala::Generala( IDiceRoller& _roller, const GameConfiguration& conf, YahtzeeWriter *writer ) 
 	:	_playerNum(0), dice(conf.NumberOfDice, Die(1)), roller(_roller), 
-		yahtzeeWriter(writer), configuration(conf), calculator(*yahtzeeWriter, conf.MaxDiceValue),
+		yahtzeeWriter(writer), configuration(conf), calculator(conf.MaxDiceValue),
 		player_count(0u), current_state_index(1u)
 {
 	current_turn = Scores::scores_count;
