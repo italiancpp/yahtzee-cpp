@@ -32,6 +32,7 @@ public:
 
 	void AssignScoreIfNotAssigned(Scores::ScoreName scoreName, size_t score, bool markAsAssigned = false);
 	bool HasScore(Scores::ScoreName scoreName) const;
+	unsigned short GetScoreAt(Scores::ScoreName scoreName) const;
 	unsigned short TotalScore() const;
 
 	bool operator==(const ScoreTable& other) const;

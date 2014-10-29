@@ -12,7 +12,7 @@ public:
 	void NewShot();
 	size_t GetShotNumber() const;
 	
-	void AssignScoreFromPotential(Scores::ScoreName scoreName, size_t score);
+	void AssignScoreFromPotential(Scores::ScoreName scoreName);
 
 	ScoreTable currentScores;
 	ScoreTable potentialScores;

@@ -44,6 +44,11 @@ bool ScoreTable::operator==( const ScoreTable& other ) const
 	return scores == other.scores;
 }
 
+unsigned short ScoreTable::GetScoreAt( Scores::ScoreName scoreName ) const
+{
+	return scores[scoreName].value;
+}
+
 ostream& operator<<(ostream& stream, const ScoreTable& table)
 {
 	for (int i=0; i<table.scores.size(); ++i)

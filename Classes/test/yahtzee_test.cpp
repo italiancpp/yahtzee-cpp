@@ -2,7 +2,6 @@
 #include "../Yahtzee/DiceRoller.h"
 #include "../Yahtzee/Generala.h"
 #include "../Yahtzee/GameConfiguration.h"
-//#include <memory>
 #include "../Yahtzee/Yahtzee.h"
 
 class MockYahtzeeWriter : public YahtzeeWriter
@@ -45,6 +44,7 @@ public:
 	{
 		++called_endTurnFor;
 		endTurnFor_playerName = player.name;
+		endTurnFor_currentScores = currentScores;
 	}
 
 	virtual void scoreCalculated( const ScoreTable& scores ) 
@@ -81,7 +81,8 @@ public:
 	size_t diceRolled_remaningShots;
 	size_t diceRolled_currentShot;
 	ScoreTable scoreCalculated_scores;
-	std::string endTurnFor_playerName; 
+	std::string endTurnFor_playerName;
+	ScoreTable endTurnFor_currentScores;
 };
 
 class MockDiceRoller : public IDiceRoller
@@ -220,6 +221,13 @@ void MockYahtzeeWriter::startTurnFor(size_t player_count, size_t current_turn, s
 
 //////////////////////////////////////////////////////////////////////////
 
+/* TO-DO
+
+ - refactoring dei test --> fixture
+ - throw exception (o altro) se fai un SelectScore su una ScoreName già assegnata
+ - più test di gioco
+*/
+
 using namespace std;
 
 TEST(NewYahtzeeTest, on_creation_should_do_nothing)
@@ -307,6 +315,26 @@ TEST(NewYahtzeeTest, on_roll_dice_three_times_should_remain_no_shots)
 	ASSERT_EQ( writer.diceRolled_currentShot , 3u );
 	ASSERT_EQ( writer.diceRolled_remaningShots, 0u);
 	ASSERT_EQ( writer.called_scoreCalculated, 3);
+}
+
+TEST(NewYahtzeeTest, on_select_score_should_assign_scores_to_current_player)
+{
+	auto defaultConfig = CreateDefaultGameConfiguration();
+	MockDiceRoller mockedRoller;
+	int mockedDiceValueArr[5] = {1,1,1,1,1};
+	mockedRoller.AssignDiceValues(mockedDiceValueArr);
+	vector<Die> mockedDiceValue(mockedDiceValueArr, mockedDiceValueArr + 5);
+	ScoreTable expectedSelectedScores;
+	expectedSelectedScores.AssignScoreIfNotAssigned(Scores::generala, 55, true);
+
+	DicePlayer player1("Marco", mockedRoller);
+	MockYahtzeeWriter writer;
+	Yahtzee game(vector<DicePlayer>(1, player1), defaultConfig, writer);
+	game.newGame();
+	game.rollDice();
+	game.SelectScore(Scores::generala);
+
+	ASSERT_EQ(writer.endTurnFor_currentScores, expectedSelectedScores);
 }
 
 TEST(NewYahtzeeTest, on_select_score_should_end_turn_for_current_player)

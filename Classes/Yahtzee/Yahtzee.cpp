@@ -48,9 +48,9 @@ void Yahtzee::holdDice( const std::vector<int>& diceToHold )
 
 void Yahtzee::SelectScore( Scores::ScoreName score )
 {
-	size_t currPlayer = currentPlayerIndex;
+	CurrentState().AssignScoreFromPotential(score);
+	writer.endTurnFor(players[currentPlayerIndex], CurrentState().currentScores, currentTurnNumber);
 	currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
-	writer.endTurnFor(players[currPlayer], CurrentState().currentScores, currentTurnNumber);
 	if (currentPlayerIndex == 0) // Verifico che il turno sia finito...
 	{
 		++currentTurnNumber;
