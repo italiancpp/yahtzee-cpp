@@ -14,14 +14,15 @@ class Yahtzee
 public:
 	Yahtzee(const std::vector<DicePlayer>& _players, const GameConfiguration& _conf, YahtzeeWriter& _writer);
 
-	void newGame(); // inizia il gioco (e.g. setta il primo turno)
-	void rollDice(); // tira i dadi per giocatore corrente e calcola il punteggio
-	void holdDice(const std::vector<int>& diceToHold); // fa hold di alcuni dadi
-	void SelectScore(Scores::ScoreName score); // fine turno giocatore corrente
+	size_t numberOfPlayers() const;
+	std::vector<std::pair<const DicePlayer*, const ScoreTable*>> getRank() const;
 	std::string getWinner();
 
-	size_t numberOfPlayers() const;
-
+	void newGame();
+	void rollDice(); 
+	void holdDice(const std::vector<int>& diceToHold); 
+	void selectScore(Scores::ScoreName score); 
+	
 private:
 	void ResetDice();
 	bool CurrentPlayerHasMoreShots() const;

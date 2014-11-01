@@ -16,3 +16,8 @@ size_t DicePlayer::MaxNumberOfShots() const
 {
 	return configuration.NumberOfShots;
 }
+
+const std::string& DicePlayer::Name() const
+{
+	return name;
+}

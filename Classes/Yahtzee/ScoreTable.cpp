@@ -32,11 +32,10 @@ bool ScoreTable::HasScore(Scores::ScoreName scoreName) const
 void ScoreTable::AssignScoreIfNotAssigned(Scores::ScoreName scoreName, size_t score, bool markAsAssigned)
 {
 	Score& dieActualScore = scores.at(scoreName);
-	if (!dieActualScore.assigned) 
-	{
-		dieActualScore.value = score;
-		dieActualScore.assigned = markAsAssigned;
-	}
+	if (dieActualScore.assigned)
+		throw domain_error("ScoreTable: trying to assign an already assigned score");
+	dieActualScore.value = score;
+	dieActualScore.assigned = markAsAssigned;
 }
 
 bool ScoreTable::operator==( const ScoreTable& other ) const

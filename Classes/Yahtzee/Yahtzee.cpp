@@ -46,7 +46,7 @@ void Yahtzee::holdDice( const std::vector<int>& diceToHold )
 		dice[diceToHold[i]].hold = true;
 }
 
-void Yahtzee::SelectScore( Scores::ScoreName score )
+void Yahtzee::selectScore( Scores::ScoreName score )
 {
 	CurrentState().AssignScoreFromPotential(score);
 	writer.endTurnFor(players[currentPlayerIndex], CurrentState().currentScores, currentTurnNumber);
@@ -83,4 +83,14 @@ void Yahtzee::ResetDice()
 bool Yahtzee::CurrentPlayerHasMoreShots() const
 {
 	return players[currentPlayerIndex].MaxNumberOfShots() > playerStates[currentPlayerIndex].GetShotNumber();
+}
+
+std::vector<std::pair<const DicePlayer*, const ScoreTable*>> Yahtzee::getRank() const
+{
+	std::vector<std::pair<const DicePlayer*, const ScoreTable*>> rank;
+	for(int i=0; i<players.size(); ++i)
+	{
+		rank.push_back(make_pair(&players[i], &playerStates[i].currentScores));
+	}
+	return rank;
 }

@@ -21,7 +21,6 @@ void GameState::NewShot()
 void GameState::AssignScoreFromPotential(Scores::ScoreName scoreName)
 {
 	currentScores.AssignScoreIfNotAssigned(scoreName, potentialScores.GetScoreAt(scoreName), true);
-	//currentScores.AssignScoreIfNotAssigned(scoreName, score, true);
 }
 
 size_t GameState::GetShotNumber() const

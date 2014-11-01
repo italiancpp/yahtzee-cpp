@@ -7,12 +7,12 @@ using namespace std;
 /* TO-DO
 
  - Constraint di dominio
-	-- SelectScore su ScoreName già assegnata
-	-- più di 3 tiri
+ 	-- più di 3 tiri
 	 
  - Test di gioco
 
 
+ - Cosa tornare quando finisce il gioco?
 */
 
 static const GameConfiguration DEFAULT_GAME_CONFIG = CreateDefaultGameConfiguration();
@@ -51,7 +51,7 @@ TEST_F(YahtzeeTest, on_start_turn_should_notify_writer_with_first_player)
 	game.newGame();
 
 	ASSERT_EQ( writer.called_startTurnFor, 1 );
-	ASSERT_EQ( writer.startTurnFor_current_turn_arg , 1u );
+	ASSERT_EQ( writer.startTurnFor_currentTurn , 1u );
 	ASSERT_STRCASEEQ( writer.startTurnFor_playerName.c_str(), "Marco" );
 }
 
@@ -110,7 +110,7 @@ TEST_F(YahtzeeTest, on_select_score_should_assign_scores_to_current_player)
 	
 	game.newGame();
 	game.rollDice();
-	game.SelectScore(Scores::generala);
+	game.selectScore(Scores::generala);
 
 	ASSERT_EQ(writer.endTurnFor_currentScores, expectedScores);
 }
@@ -123,7 +123,7 @@ TEST_F(YahtzeeTest, on_select_score_should_end_turn_for_current_player)
 	
 	game.newGame();
 	game.rollDice();
-	game.SelectScore(Scores::generala);
+	game.selectScore(Scores::generala);
 
 	ASSERT_EQ( writer.called_endTurnFor, 1 );
 	ASSERT_STRCASEEQ( writer.endTurnFor_playerName.c_str(), "Marco" );
@@ -142,12 +142,12 @@ TEST_F(YahtzeeTest, on_select_score_should_start_turn_for_other_player)
 	
 	game.newGame();
 	game.rollDice();
-	game.SelectScore(Scores::generala);
+	game.selectScore(Scores::generala);
 
 	ASSERT_EQ( writer.called_startTurnFor, 2 );
 	ASSERT_EQ( writer.startTurnFor_playerName, "Gianluca" );
+	ASSERT_EQ( writer.startTurnFor_currentTurn, 1u );
 }
-
 
 TEST_F(YahtzeeTest, on_select_score_with_only_one_turn_should_call_game_over)
 {
@@ -156,7 +156,19 @@ TEST_F(YahtzeeTest, on_select_score_with_only_one_turn_should_call_game_over)
 	
 	game.newGame();
 	game.rollDice();
-	game.SelectScore(Scores::generala);
+	game.selectScore(Scores::generala);
 
 	ASSERT_EQ( writer.called_gameOver, 1 );
+}
+
+TEST_F(YahtzeeTest, on_select_score_on_already_assign_score_should_fail)
+{
+	Yahtzee game(CreateOnePlayerAsMarco(), DEFAULT_GAME_CONFIG, writer);
+
+	game.newGame();
+	game.rollDice();
+	game.selectScore(Scores::generala);
+	game.rollDice();
+	
+	ASSERT_THROW( game.selectScore(Scores::generala), domain_error );
 }

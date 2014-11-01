@@ -12,7 +12,8 @@ public:
 
 	void RollDice(std::vector<Die>& dice);
 	size_t MaxNumberOfShots() const;
-
+	const std::string& Name() const;	
+private:
 	std::string name;
 	IDiceRoller* roller;
 	DicePlayerConfiguration configuration;

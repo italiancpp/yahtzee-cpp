@@ -27,8 +27,8 @@ public:
 	virtual void startTurnFor( DicePlayer& player, size_t currentTurn ) 
 	{
 		++called_startTurnFor;
-		startTurnFor_current_turn_arg = currentTurn;
-		startTurnFor_playerName = player.name;
+		startTurnFor_currentTurn = currentTurn;
+		startTurnFor_playerName = player.Name();
 	}
 
 	virtual void diceRolled( const std::vector<Die>& dice, size_t currentShot, size_t remainingShots ) 
@@ -42,7 +42,7 @@ public:
 	virtual void endTurnFor( DicePlayer& player, const ScoreTable& currentScores, size_t justEndedTurn ) 
 	{
 		++called_endTurnFor;
-		endTurnFor_playerName = player.name;
+		endTurnFor_playerName = player.Name();
 		endTurnFor_currentScores = currentScores;
 	}
 
@@ -71,7 +71,7 @@ public:
 	std::vector<DicePlayer> newGameCreated_players;
 	size_t newGameCreated_totalTurns;
 
-	size_t startTurnFor_current_turn_arg;
+	size_t startTurnFor_currentTurn;
 	std::string startTurnFor_playerName;
 
 	std::vector<Die> diceRolled_diceValue;
