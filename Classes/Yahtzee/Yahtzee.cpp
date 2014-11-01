@@ -61,6 +61,7 @@ void Yahtzee::selectScore( Scores::ScoreName score )
 			return;
 		}
 	}
+	playerStates[currentPlayerIndex].NewTurn();
 	writer.startTurnFor(players[currentPlayerIndex], currentTurnNumber);
 }
 

@@ -172,3 +172,58 @@ TEST_F(YahtzeeTest, on_select_score_on_already_assign_score_should_fail)
 	
 	ASSERT_THROW( game.selectScore(Scores::generala), domain_error );
 }
+
+// full-game test
+
+TEST_F(YahtzeeTest, on_full_game_two_players_two_turns)
+{
+	DicePlayer player1("Marco", mockedRoller);
+	DicePlayer player2("Gianluca", mockedRoller);
+	vector<DicePlayer> players; 
+	players.push_back(player1); 
+	players.push_back(player2); 
+	GameConfiguration oneTurnConfig(5, 6, 2);
+	Yahtzee game(players, oneTurnConfig, writer);
+
+	game.newGame();
+
+	// ---- first turn
+    
+	// first player shot
+	{
+		int mockedDiceValueArr[5] = {1,2,3,1,1};
+		mockedRoller.AssignDiceValues(mockedDiceValueArr);	
+	}
+	game.rollDice();
+	game.selectScore(Scores::one);
+
+	// second player shot
+	{
+		int mockedDiceValueArr[5] = {2,2,3,4,5};
+		mockedRoller.AssignDiceValues(mockedDiceValueArr);	
+	}
+	game.rollDice();
+	game.selectScore(Scores::two);
+
+	// ---- second turn
+
+	// first player shot
+	{
+		int mockedDiceValueArr[5] = {1,2,3,4,5};
+		mockedRoller.AssignDiceValues(mockedDiceValueArr);	
+	}
+	game.rollDice();
+	game.rollDice(); 
+	game.selectScore(Scores::straight); // not at first shot
+
+	// second player shot
+	{
+		int mockedDiceValueArr[5] = {3,3,3,1,2};
+		mockedRoller.AssignDiceValues(mockedDiceValueArr);	
+	}
+	game.rollDice();
+	game.rollDice(); 
+	game.selectScore(Scores::three);
+
+	ASSERT_EQ( writer.called_gameOver, 1 );
+}
