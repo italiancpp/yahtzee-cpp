@@ -218,12 +218,19 @@ TEST_F(YahtzeeTest, on_full_game_two_players_two_turns)
 
 	// second player shot
 	{
-		int mockedDiceValueArr[5] = {3,3,3,1,2};
+		int mockedDiceValueArr[5] = {3,3,3,3,2};
 		mockedRoller.AssignDiceValues(mockedDiceValueArr);	
 	}
 	game.rollDice();
 	game.rollDice(); 
-	game.selectScore(Scores::three);
+	game.selectScore(Scores::poker);
 
 	ASSERT_EQ( writer.called_gameOver, 1 );
+
+	std::vector<std::pair<const DicePlayer*, const ScoreTable*>> rank = game.getRank();
+
+	ASSERT_EQ( rank[0].first->Name(), "Gianluca" );
+	ASSERT_EQ( rank[0].second->TotalScore(), 44 );
+	ASSERT_EQ( rank[1].first->Name(), "Marco" );
+	ASSERT_EQ( rank[1].second->TotalScore(), 23 );
 }

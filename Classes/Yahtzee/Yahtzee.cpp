@@ -2,6 +2,7 @@
 #include "YahtzeeWriter.h"
 #include "GameConfiguration.h"
 #include <stdexcept>
+#include <algorithm>
 
 using namespace std;
 
@@ -93,5 +94,8 @@ std::vector<std::pair<const DicePlayer*, const ScoreTable*>> Yahtzee::getRank() 
 	{
 		rank.push_back(make_pair(&players[i], &playerStates[i].currentScores));
 	}
+	sort(begin(rank), end(rank), [](const std::pair<const DicePlayer*, const ScoreTable*>& one, const std::pair<const DicePlayer*, const ScoreTable*>& two) {
+		return one.second->TotalScore() > two.second->TotalScore();
+	});
 	return rank;
 }
