@@ -20,7 +20,7 @@ void Yahtzee::newGame()
 	currentTurnNumber = 1u;
 	writer.newGameCreated(players, configuration.TurnsNumber);
 	playerStates[currentPlayerIndex].NewTurn();
-	writer._startTurnFor(players[currentPlayerIndex], currentTurnNumber);
+	writer.startTurnFor(players[currentPlayerIndex], currentTurnNumber);
 }
 
 GameState& Yahtzee::CurrentState()
@@ -61,7 +61,7 @@ void Yahtzee::SelectScore( Scores::ScoreName score )
 			return;
 		}
 	}
-	writer._startTurnFor(players[currentPlayerIndex], currentTurnNumber);
+	writer.startTurnFor(players[currentPlayerIndex], currentTurnNumber);
 }
 
 std::string Yahtzee::getWinner()

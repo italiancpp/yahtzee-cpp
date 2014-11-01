@@ -1,3 +1,8 @@
+
+/************************************************************************/
+/* WARNING: QUESTO FILE SARA' BUTTATO AL PIU' PRESTO                    */
+/************************************************************************/
+
 #include "Generala.h"
 #include "DiceRoller.h"
 #include "ScoreValues.h"
@@ -72,7 +77,7 @@ void Generala::playerNumber( size_t n )
 	auto old = _playerNum;
 	_states.resize(n);
 	_playerNum = n;
-	yahtzeeWriter->numberOfPlayersChanged(old, _playerNum);
+	//yahtzeeWriter->numberOfPlayersChanged(old, _playerNum);
 }
 
 int Generala::Start()
@@ -88,7 +93,7 @@ int Generala::Start()
 //			system("cls");
 //			cout << "Player [" << player_count++ << "] Turn: " << turns_number - current_turn << " of " << turns_number << endl;
 //			cout << endl;
-			yahtzeeWriter->startTurnFor(player_count, current_turn, configuration.TurnsNumber);
+			//yahtzeeWriter->startTurnFor(player_count, current_turn, configuration.TurnsNumber);
 
 
 
@@ -240,8 +245,3 @@ void Generala::selectScore(Scores::ScoreName score)
 }
 
 
-void YahtzeeWriter::numberOfPlayersChanged(size_t oldValue, size_t newValue)
-{
-	//std::cout << "Created game for " << _playerNum << " players!" << std::endl;
-
-}
