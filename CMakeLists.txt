@@ -284,12 +284,19 @@ include_directories(${GTEST_ROOT}/include)
 add_subdirectory(${GTEST_ROOT})
 
 add_executable(yahtzee_test ${SRC_TEST} ${CORE_SRC})
+
+if ( MSVC )
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi")
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Od")
+endif()
+
 add_test(yahtzee_test yahtzee_test)
 if ( WIN32 )
   target_link_libraries(yahtzee_test gtest_main gtest)
 else()
   target_link_libraries(yahtzee_test gtest_main gtest pthread)
 endif()
+
 #add_custom_target(rt COMMAND "./yahtzee_test" DEPENDS yahtzee_test)
 ########################
 
