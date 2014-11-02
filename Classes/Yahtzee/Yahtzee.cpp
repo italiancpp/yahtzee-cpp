@@ -88,6 +88,11 @@ bool Yahtzee::CurrentPlayerHasMoreShots() const
 	return players[currentPlayerIndex].MaxNumberOfShots() > playerStates[currentPlayerIndex].GetShotNumber();
 }
 
+bool PlayerIsBetterThanOther(const std::pair<const DicePlayer*, const ScoreTable*>& one, const std::pair<const DicePlayer*, const ScoreTable*>& other) 
+{
+	return one.second->TotalScore() > other.second->TotalScore();
+}
+
 std::vector<std::pair<const DicePlayer*, const ScoreTable*>> Yahtzee::getRank() const
 {
 	std::vector<std::pair<const DicePlayer*, const ScoreTable*>> rank;
@@ -95,8 +100,6 @@ std::vector<std::pair<const DicePlayer*, const ScoreTable*>> Yahtzee::getRank() 
 	{
 		rank.push_back(make_pair(&players[i], &playerStates[i].currentScores));
 	}
-	sort(begin(rank), end(rank), [](const std::pair<const DicePlayer*, const ScoreTable*>& one, const std::pair<const DicePlayer*, const ScoreTable*>& two) {
-		return one.second->TotalScore() > two.second->TotalScore();
-	});
+	sort(begin(rank), end(rank), PlayerIsBetterThanOther);
 	return rank;
 }
