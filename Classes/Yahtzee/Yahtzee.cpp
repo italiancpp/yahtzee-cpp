@@ -51,6 +51,7 @@ void Yahtzee::selectScore( Scores::ScoreName score )
 {
 	CurrentState().AssignScoreFromPotential(score);
 	writer.endTurnFor(players[currentPlayerIndex], CurrentState().currentScores, currentTurnNumber);
+	ResetDice();
 	currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
 	if (currentPlayerIndex == 0) // Verifico che il turno sia finito...
 	{
