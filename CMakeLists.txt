@@ -294,5 +294,9 @@ endif()
 ########################
 
 ### Console Target ###
-add_executable(yahtzee_console ${CORE_SRC} Classes/main_console.cpp)
+set(CONSOLE_SRC
+  Classes/console/ConsoleWriter.cpp
+  Classes/console/main_console.cpp)
+
+add_executable(yahtzee_console ${CORE_SRC} ${CONSOLE_SRC})
 ######################
