@@ -11,7 +11,7 @@ void DiceRoller::Roll(vector<Die>& dice)
 {
 	uniform_int_distribution<unsigned short> rdist(1, maxDiceValue); 
 	
-	for (size_t i = 0u; i < dice.size(); ++i)
+	for (int i = 0; i < dice.size(); ++i)
 	{
 		if (!dice[i].hold)
 			dice[i].value = rdist(rengine);

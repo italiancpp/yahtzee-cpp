@@ -4,17 +4,6 @@
 
 using namespace std;
 
-/* TO-DO
-
- - Constraint di dominio
- 	-- più di 3 tiri
-	 
- - Test di gioco
-
-
- - Cosa tornare quando finisce il gioco?
-*/
-
 static const GameConfiguration DEFAULT_GAME_CONFIG = CreateDefaultGameConfiguration();
 
 vector<DicePlayer> CreateOnePlayerAsMarco()
