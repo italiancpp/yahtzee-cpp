@@ -5,6 +5,7 @@
 #include "../Yahtzee/ScoreTable.h"
 #include "../Yahtzee/YahtzeeWriter.h"
 #include "../Yahtzee/DicePlayer.h"
+#include "../Yahtzee/Yahtzee.h"
 
 class ConsoleWriter : public YahtzeeWriter
 {
@@ -24,4 +25,6 @@ public:
 private:
 	int getPlayerNumber();
 	std::vector<DicePlayer> createPlayers(int number);
+	void selectScore(Yahtzee &yahtzee);
+	void selectDieToHold(Yahtzee &yahtzee);
 };
