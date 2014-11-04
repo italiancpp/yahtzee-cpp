@@ -76,7 +76,6 @@ set(CORE_SRC
   Classes/Yahtzee/DicePlayer.cpp
   Classes/Yahtzee/DiceRoller.cpp
   Classes/Yahtzee/GameState.cpp
-  Classes/Yahtzee/Generala.cpp
   Classes/Yahtzee/ScoreCalculator.cpp
   Classes/Yahtzee/ScoreTable.cpp
   Classes/Yahtzee/ScoreValues.cpp
