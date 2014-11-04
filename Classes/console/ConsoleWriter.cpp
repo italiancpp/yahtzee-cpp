@@ -9,6 +9,15 @@
 
 using namespace std;
 
+// TODO -> C'è ancora nei nomi generala, andrebbe sistituito con yahtzee
+// TODO -> Se non premo h o s o r, ora è come se premessi r, avrebbe senso insistere e richiedere una scelta
+// TODO -> Se non ci sono più tiri disponibili si deve chiedere quale score scegliere, ora tira un eccezione
+// TODO -> Occorre stampare diversamente la tabella dello score per dare la posizione dello score
+// TODO -> Non è possibile 'resettare' i dati che si erano tenuti il giro prima
+// TODO -> Se assegni uno score già presente tira una eccezzione
+// TODO -> Non viene controllato che si inserisca il numero corretto del dado (si può dire di tenere il dato 12)
+// TODO -> Avrebbe senso stampare prima i dadi e poi il potential score, per fare questo ha senso fare un test
+
 ConsoleWriter::ConsoleWriter()
 {
 
@@ -38,13 +47,12 @@ void ConsoleWriter::scoreCalculated(const ScoreTable &scores)
 	cout << endl;
 }
 
-// TODO current shot e ramainign sono girati!!!
 void ConsoleWriter::diceRolled(const std::vector<Die> &dice, size_t currentShot, size_t remainingShots)
 {
 	cout << "*************************************" << endl;
 	cout << "* Dadi                              *" << endl;
 	cout << "*************************************" << endl;
-	cout << "Tiro numero: " << currentShot << " su " << remainingShots << endl;
+	cout << "Tiro numero: " << currentShot << " - Rimanenti: " << remainingShots << endl;
 	cout << "Valore:    ";
 	for_each(begin(dice), end(dice), [](const Die die) {
 		cout << die.value << " ";
@@ -76,35 +84,6 @@ void ConsoleWriter::gameOver()
 	cout << "GAME OVER!!!!!" << endl;
 }
 
-
-/*
-     1 1 2 3 5   remaning: 2
-       ^ ^ ^
-pos: 1 2 3 4 5
-
-[1] one -> 0 *
-[2] ...
-...
-
-hold (h) or served (s)? s
-which line (only with *): 1
-
-Player Marco, end of turn 2
-
-[1] one ->
-[2] ...
-
-...> premere un tasto
-
-
-hold (h) or served (s)? h
-which dice to hold? 1 3
-
-     1 1 2 3 5   remaning: 1
-       ^   ^ ^
-pos: 1 2 3 4 5
- */
-
 void ConsoleWriter::run()
 {
 	auto playerNumber = getPlayerNumber();
@@ -118,7 +97,10 @@ void ConsoleWriter::run()
 	{
 		yahtzee.rollDice();
 
-		cout << "Cosa vuoi fare? premi S ed invio per selezionare lo score oppure premi h e invio per selezionare quali dati tenere ";
+		cout << "s + Enter -> Selezioni lo score " << endl;
+		cout << "h + Enter -> Selezioni i dadi da tenere" << endl;
+		cout << "r + Enter -> Lancia i dadi" << endl;
+		cout << "> ";
 
 		string cmd;
 		cin >> cmd;
@@ -131,10 +113,14 @@ void ConsoleWriter::run()
 		{
 			selectDieToHold(yahtzee);
 		}
+		if (cmd == "r")
+		{
+
+
+		}
 	}
 }
 
-// TODO - Controllare che inseirscano almeno 1 giocatore
 int ConsoleWriter::getPlayerNumber()
 {
 	int playerNumber = 0;
@@ -149,7 +135,7 @@ std::vector<DicePlayer> ConsoleWriter::createPlayers(int number)
 	for (int i = 0; i < number; ++i)
 	{
 		std::stringstream ss;
-		ss << "Player" << number;
+		ss << "Player" << i + 1;
 		auto player = DicePlayer(ss.str(), GameConfiguration::DEFAULT_DICE_ROLLER);
 		players.push_back(player);
 	}
@@ -206,7 +192,6 @@ void ConsoleWriter::selectDieToHold(Yahtzee &yahtzee)
 		}
 	}
 
-	// TODO holdDice è 0 based per cui quì ci potrebbe essereun bug test rosso?
 	yahtzee.holdDice(diceToHold);
 }
 

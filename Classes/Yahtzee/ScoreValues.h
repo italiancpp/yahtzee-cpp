@@ -34,7 +34,7 @@ static const std::array<std::string, Scores::scores_count> score_names =
 		"straight",
 		"full",
 		"poker",
-		"generala", // TODO Questo dovrebbe essere yahtzee facciamo un test rosso!!!
+		"generala",
 	};
 
 Scores::ScoreName DieValueToScore(unsigned short dieValue);
