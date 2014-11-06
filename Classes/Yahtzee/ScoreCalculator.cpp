@@ -10,12 +10,14 @@ ScoreCalculator::ScoreCalculator( unsigned short _maxDiceValue )
 ScoreCalculator::~ScoreCalculator()
 {}
 
-void CalculateRanks(const vector<Die>& dice, unsigned short* ranks)
+unsigned short* CalculateRanks(const vector<Die>& dice, unsigned short maxDiceValue)
 {
+	unsigned short* ranks = new unsigned short[maxDiceValue]();
 	for (size_t i = 0u; i<dice.size(); ++i)
 	{
 		ranks[dice[i].value - 1] += 1;
 	}
+	return ranks;
 }
 
 void CalculateHistogram(unsigned short* ranks, int size, Histogram& histogram)
@@ -39,9 +41,7 @@ inline unsigned short Score(unsigned short score, bool isFirstShot, unsigned sho
 
 void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort, ScoreTable& currentTable) const
 {
-	unsigned short* ranks = new unsigned short[maxDiceValue]();
-	CalculateRanks(dice, ranks);
-
+	unsigned short* ranks = CalculateRanks(dice, maxDiceValue);
 	Histogram histogram;
 	CalculateHistogram(ranks, maxDiceValue, histogram);
 
@@ -55,10 +55,8 @@ void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort
 
 	if (histogram_has(histogram, 2))
 	{
-		for (auto pair : histogram.find(2)->second)
-		{
-			currentTable.AssignScoreIfNotAssigned(DieValueToScore(pair), 2 * pair);
-		}
+		auto pair = histogram.find(2)->second.front();
+		currentTable.AssignScoreIfNotAssigned(DieValueToScore(pair), 2 * pair);
 	}
 
 	if (histogram_has(histogram, 3))
