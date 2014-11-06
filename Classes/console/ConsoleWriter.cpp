@@ -188,7 +188,7 @@ void ConsoleWriter::selectDieToHold(Yahtzee &yahtzee)
 {
 
 	cin.ignore();
-	cout << "Scrivi la posizione del datoda tenere (1 2 etc ...) ";
+	cout << "Scrivi le posizioni dei dadi da tenere (1 2 etc ...) ";
 	string dieIndex;
 	getline(cin, dieIndex);
 
