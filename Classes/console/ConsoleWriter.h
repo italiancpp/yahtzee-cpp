@@ -10,9 +10,6 @@
 class ConsoleWriter : public YahtzeeWriter
 {
 public:
-	ConsoleWriter();
-	virtual ~ConsoleWriter();
-
 	virtual void startTurnFor(DicePlayer &player, size_t currentTurn);
 	virtual void newGameCreated(const std::vector<DicePlayer> &players, size_t totalTurns);
 	virtual void scoreCalculated(const ScoreTable &scores);

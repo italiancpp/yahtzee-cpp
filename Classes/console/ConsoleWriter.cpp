@@ -18,15 +18,6 @@ using namespace std;
 // TODO -> Non viene controllato che si inserisca il numero corretto del dado (si può dire di tenere il dato 12)
 // TODO -> Avrebbe senso stampare prima i dadi e poi il potential score, per fare questo ha senso fare un test
 
-ConsoleWriter::ConsoleWriter()
-{
-
-}
-
-ConsoleWriter::~ConsoleWriter()
-{
-
-}
 
 void ConsoleWriter::startTurnFor(DicePlayer &player, size_t currentTurn)
 {
@@ -95,7 +86,16 @@ void ConsoleWriter::run()
 	yahtzee.newGame();
 	while(true)
 	{
-		yahtzee.rollDice();
+		try
+		{
+			yahtzee.rollDice();
+		}
+		catch(...)
+		{
+			cout << "Hai finito i tiri! Scegli uno score!" << endl;
+			selectScore(yahtzee);
+			continue;
+		}
 
 		cout << "s + Enter -> Selezioni lo score " << endl;
 		cout << "h + Enter -> Selezioni i dadi da tenere" << endl;
@@ -103,21 +103,27 @@ void ConsoleWriter::run()
 		cout << "> ";
 
 		string cmd;
-		cin >> cmd;
-
-		if (cmd == "s")
+		bool done = false;
+		while(!done)
 		{
-			selectScore(yahtzee);
-		}
-		if (cmd == "h")
-		{
-			selectDieToHold(yahtzee);
-		}
-		if (cmd == "r")
-		{
+			done = true;
+			cin >> cmd;
 
-
+			if (cmd == "s")
+			{
+				selectScore(yahtzee);
+			}
+			else if (cmd == "h")
+			{
+				selectDieToHold(yahtzee);
+			}
+			else if (cmd != "r")
+			{
+				cout << "Non capisco :( > "; 
+				done = false;
+			}
 		}
+		
 	}
 }
 
@@ -132,11 +138,12 @@ int ConsoleWriter::getPlayerNumber()
 std::vector<DicePlayer> ConsoleWriter::createPlayers(int number)
 {
 	std::vector<DicePlayer> players;
+	string playerName;
 	for (int i = 0; i < number; ++i)
 	{
-		std::stringstream ss;
-		ss << "Player" << i + 1;
-		auto player = DicePlayer(ss.str(), GameConfiguration::DEFAULT_DICE_ROLLER);
+		cout << "Nome del giocatore " << i+1 << "> ";
+		cin >> playerName;
+		auto player = DicePlayer(playerName, GameConfiguration::DEFAULT_DICE_ROLLER);
 		players.push_back(player);
 	}
 
@@ -146,10 +153,22 @@ std::vector<DicePlayer> ConsoleWriter::createPlayers(int number)
 
 void ConsoleWriter::selectScore(Yahtzee &yahtzee)
 {
-	cout << "Scrivi la posizione dello score da tenere (1, 2, etc ..) ";
+	cout << "Scrivi la posizione dello score da tenere (1, 2, etc ..) > ";
+	bool done = false;
 	int scoreIndex;
-	cin >> scoreIndex;
-	yahtzee.selectScore((Scores::ScoreName)(scoreIndex - 1));
+	while (!done)
+	{
+		cin >> scoreIndex;
+		try
+		{
+			yahtzee.selectScore((Scores::ScoreName)(scoreIndex - 1));
+			done = true;
+		}
+		catch(...)
+		{
+			cout << "Hai gia' selezionato questo score...scegli di nuovo > ";
+		}
+	}
 }
 
 
