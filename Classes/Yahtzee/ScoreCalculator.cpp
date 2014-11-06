@@ -86,9 +86,9 @@ void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort
 
 	if (histogram_has(histogram, 5))
 	{
-		currentTable.AssignScoreIfNotAssigned(Scores::generala, Score(50, isFirstShort));
-		auto generalaValue = histogram.find(5)->second.front();
-		currentTable.AssignScoreIfNotAssigned(DieValueToScore(generalaValue), 5 * generalaValue);
+		currentTable.AssignScoreIfNotAssigned(Scores::yahtzee, Score(50, isFirstShort));
+		auto yahtzeeValue = histogram.find(5)->second.front();
+		currentTable.AssignScoreIfNotAssigned(DieValueToScore(yahtzeeValue), 5 * yahtzeeValue);
 	}
 
 	delete [] ranks;

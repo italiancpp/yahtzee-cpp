@@ -15,7 +15,7 @@ namespace Scores
 		straight,
 		full,
 		poker,
-		generala,
+		yahtzee,
 
 		placeholder_last
 	};
@@ -34,7 +34,7 @@ static const std::array<std::string, Scores::scores_count> score_names =
 		"straight",
 		"full",
 		"poker",
-		"generala",
+		"yahtzee",
 	};
 
 Scores::ScoreName DieValueToScore(unsigned short dieValue);

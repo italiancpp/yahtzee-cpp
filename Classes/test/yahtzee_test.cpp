@@ -95,11 +95,11 @@ TEST_F(YahtzeeTest, on_select_score_should_assign_scores_to_current_player)
 	Yahtzee game(CreateOnePlayerAsMarcoWithMockedRoller(), DEFAULT_GAME_CONFIG, writer);
 
 	ScoreTable expectedScores;
-	expectedScores.AssignScoreIfNotAssigned(Scores::generala, 55, true);
+	expectedScores.AssignScoreIfNotAssigned(Scores::yahtzee, 55, true);
 	
 	game.newGame();
 	game.rollDice();
-	game.selectScore(Scores::generala);
+	game.selectScore(Scores::yahtzee);
 
 	ASSERT_EQ(writer.endTurnFor_currentScores, expectedScores);
 }
@@ -112,7 +112,7 @@ TEST_F(YahtzeeTest, on_select_score_should_end_turn_for_current_player)
 	
 	game.newGame();
 	game.rollDice();
-	game.selectScore(Scores::generala);
+	game.selectScore(Scores::yahtzee);
 
 	ASSERT_EQ( writer.called_endTurnFor, 1 );
 	ASSERT_STRCASEEQ( writer.endTurnFor_playerName.c_str(), "Marco" );
@@ -131,7 +131,7 @@ TEST_F(YahtzeeTest, on_select_score_should_start_turn_for_other_player)
 	
 	game.newGame();
 	game.rollDice();
-	game.selectScore(Scores::generala);
+	game.selectScore(Scores::yahtzee);
 
 	ASSERT_EQ( writer.called_startTurnFor, 2 );
 	ASSERT_EQ( writer.startTurnFor_playerName, "Gianluca" );
@@ -145,7 +145,7 @@ TEST_F(YahtzeeTest, on_select_score_with_only_one_turn_should_call_game_over)
 	
 	game.newGame();
 	game.rollDice();
-	game.selectScore(Scores::generala);
+	game.selectScore(Scores::yahtzee);
 
 	ASSERT_EQ( writer.called_gameOver, 1 );
 }
@@ -156,10 +156,10 @@ TEST_F(YahtzeeTest, on_select_score_on_already_assign_score_should_fail)
 
 	game.newGame();
 	game.rollDice();
-	game.selectScore(Scores::generala);
+	game.selectScore(Scores::yahtzee);
 	game.rollDice();
 	
-	ASSERT_THROW( game.selectScore(Scores::generala), domain_error );
+	ASSERT_THROW( game.selectScore(Scores::yahtzee), domain_error );
 }
 
 // full-game test

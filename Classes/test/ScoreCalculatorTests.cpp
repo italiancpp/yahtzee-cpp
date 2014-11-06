@@ -126,17 +126,17 @@ TEST_F(ScoreCalculatorTests, on_poker)
 	CheckScoreOnShotDifferentFromFirst(expectedTable);
 }
 
-TEST_F(ScoreCalculatorTests, on_generala)
+TEST_F(ScoreCalculatorTests, on_yahtzee)
 {
 	int diceArr[] = {1,1,1,1,1};
 	dice.assign(diceArr, diceArr+5);
 
 	ScoreTable expectedTable;
 	expectedTable.AssignScoreIfNotAssigned(Scores::one, 5);
-	expectedTable.AssignScoreIfNotAssigned(Scores::generala, 55);
+	expectedTable.AssignScoreIfNotAssigned(Scores::yahtzee, 55);
 
 	CheckScoreOnFirstShot(expectedTable);
 
-	expectedTable.AssignScoreIfNotAssigned(Scores::generala, 50);
+	expectedTable.AssignScoreIfNotAssigned(Scores::yahtzee, 50);
 	CheckScoreOnShotDifferentFromFirst(expectedTable);
 }
