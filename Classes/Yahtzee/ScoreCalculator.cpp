@@ -1,3 +1,4 @@
+//#include "..\utils\debug-new\DebugNew.h"
 #include "ScoreCalculator.h"
 #include <iostream>
 
@@ -88,6 +89,4 @@ void ScoreCalculator::CheckScore(const std::vector<Die>& dice, bool isFirstShort
 		auto yahtzeeValue = histogram.find(5)->second.front();
 		currentTable.AssignScoreIfNotAssigned(DieValueToScore(yahtzeeValue), 5 * yahtzeeValue);
 	}
-
-	delete [] ranks;
 }
