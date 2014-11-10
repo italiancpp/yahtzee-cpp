@@ -1,5 +1,5 @@
 #pragma once
-#include "gtest\gtest.h"
+#include "gtest/gtest.h"
 
 class MemLeakListener : public ::testing::EmptyTestEventListener 
 {

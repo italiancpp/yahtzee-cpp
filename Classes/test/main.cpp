@@ -1,5 +1,5 @@
-#include "gtest\gtest.h"
-#include "..\utils\MemoryLeakListener.h"
+#include "gtest/gtest.h"
+#include "../utils/MemoryLeakListener.h"
 
 int main(int argc, char* argv[])
 {
