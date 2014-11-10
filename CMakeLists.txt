@@ -275,14 +275,21 @@ enable_testing()
 set(SRC_TEST
   Classes/test/yahtzee_test.cpp
   Classes/test/ScoreCalculatorTests.cpp
+  Classes/test/main.cpp
+  Classes/utils/MemoryLeakListener.cpp
+  Classes/utils/debug-new/DebugNew.cpp
+  Classes/utils/debug-new/MemoryLeak.cpp
 )
 
 ### TESTING TARGET ###
 set(GTEST_ROOT ${CMAKE_SOURCE_DIR}/gtest)
 include_directories(${GTEST_ROOT}/include)
+include_directories(Classes/utils/debug-new)
 add_subdirectory(${GTEST_ROOT})
 
 add_executable(yahtzee_test ${SRC_TEST} ${CORE_SRC})
+
+set_target_properties(yahtzee_test PROPERTIES COMPILE_DEFINITIONS "CHECK_LEAKS")
 
 if ( MSVC )
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi")
